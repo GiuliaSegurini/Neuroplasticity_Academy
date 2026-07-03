@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Checkout — Neuroplasticity Training Academy</title>
+  <script src="https://js.stripe.com/v3/"></script>
+  <style>
+    :root {
+      --navy: #0d1b2a;
+      --navy-mid: #1b2d42;
+      --navy-light: #243850;
+      --gold: #c9a84c;
+      --teal: #3ecfcf;
+      --white: #f5f3ee;
+      --grey: #8a9bb0;
+      --green: #6bcf7f;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: var(--navy);
+      color: var(--white);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    .wrap {
+      max-width: 480px;
+      width: 100%;
+    }
+    .logo {
+      text-align: center;
+      margin-bottom: 28px;
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--gold);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+    .logo span { color: var(--white); }
+
+    /* PRODUCT SELECTOR */
+    .products {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 24px;
+    }
+    .product-card {
+      background: var(--navy-mid);
+      border: 2px solid rgba(255,255,255,0.08);
+      border-radius: 12px;
+      padding: 16px 18px;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .product-card:hover { border-color: rgba(201,168,76,0.4); }
+    .product-card.selected { border-color: var(--gold); background: rgba(201,168,76,0.07); }
+    .product-left { display: flex; align-items: center; gap: 14px; }
+    .product-icon { font-size: 24px; }
+    .product-name { font-size: 15px; font-weight: 700; margin-bottom: 3px; }
+    .product-desc { font-size: 12px; color: var(--grey); }
+    .product-price { font-size: 18px; font-weight: 800; color: var(--gold); white-space: nowrap; }
+    .product-period { font-size: 10px; color: var(--grey); text-align: right; }
+
+    /* FORM */
+    .form-card {
+      background: var(--navy-mid);
+      border-radius: 14px;
+      padding: 24px;
+      border: 1px solid rgba(201,168,76,0.15);
+    }
+    .form-label {
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--grey);
+      margin-bottom: 8px;
+      display: block;
+    }
+    .form-input {
+      width: 100%;
+      padding: 13px 16px;
+      background: var(--navy-light);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 10px;
+      color: var(--white);
+      font-size: 15px;
+      outline: none;
+      margin-bottom: 14px;
+    }
+    .form-input:focus { border-color: var(--gold); }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+
+    /* STRIPE ELEMENT */
+    .stripe-wrap {
+      background: var(--navy-light);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 10px;
+      padding: 14px 16px;
+      margin-bottom: 20px;
+      min-height: 44px;
+    }
+    .stripe-wrap.focused { border-color: var(--gold); }
+
+    /* SUMMARY */
+    .summary {
+      background: var(--navy-light);
+      border-radius: 10px;
+      padding: 14px 16px;
+      margin-bottom: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .summary-name { font-size: 14px; font-weight: 600; }
+    .summary-price { font-size: 20px; font-weight: 800; color: var(--gold); }
+
+    /* BUTTON */
+    .btn-pay {
+      width: 100%;
+      padding: 16px;
+      background: var(--gold);
+      color: var(--navy);
+      border: none;
+      border-radius: 12px;
+      font-size: 16px;
+      font-weight: 800;
+      cursor: pointer;
+      transition: all 0.15s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+    .btn-pay:hover { background: #e0bc60; }
+    .btn-pay:active { transform: scale(0.98); }
+    .btn-pay:disabled { opacity: 0.5; cursor: not-allowed; }
+
+    .secure-note {
+      text-align: center;
+      font-size: 11px;
+      color: var(--grey);
+      margin-top: 12px;
+    }
+
+    /* ERROR */
+    .error-msg {
+      background: rgba(232,96,96,0.15);
+      border: 1px solid rgba(232,96,96,0.3);
+      border-radius: 8px;
+      padding: 10px 14px;
+      font-size: 13px;
+      color: #e86060;
+      margin-bottom: 14px;
+      display: none;
+    }
+
+    /* SUCCESS */
+    .success-screen {
+      display: none;
+      text-align: center;
+      padding: 40px 20px;
+    }
+    .success-screen.show { display: block; }
+    .success-icon { font-size: 64px; margin-bottom: 20px; }
+    .success-screen h2 { font-size: 26px; font-weight: 800; margin-bottom: 12px; }
+    .success-screen p { color: var(--grey); font-size: 15px; margin-bottom: 28px; line-height: 1.6; }
+    .btn-next {
+      width: 100%;
+      padding: 15px;
+      background: var(--gold);
+      color: var(--navy);
+      border: none;
+      border-radius: 12px;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="logo">Neuroplasticity Training <span>Academy</span></div>
+
+  <!-- SUCCESS -->
+  <div class="success-screen" id="success">
+    <div class="success-icon">✅</div>
+    <h2>Pagamento completato!</h2>
+    <p id="success-msg">Benvenuta nell'Academy. Controlla la tua email — riceverai accesso e istruzioni entro pochi minuti.</p>
+    <button class="btn-next" onclick="window.location.href='assessment.html'">
+      Inizia il tuo Assessment →
+    </button>
+  </div>
+
+  <!-- CHECKOUT FORM -->
+  <div id="checkout-form">
+
+    <!-- PRODUCT SELECTOR -->
+    <div class="products">
+
+      <div class="product-card selected" onclick="selectProduct(this, 'assessment')" id="prod-assessment">
+        <div class="product-left">
+          <span class="product-icon">🧠</span>
+          <div>
+            <div class="product-name">Assessment Neurocognitivo</div>
+            <div class="product-desc">6 test + profilo + mini training gratis</div>
+          </div>
+        </div>
+        <div>
+          <div class="product-price">€79</div>
+          <div class="product-period">una volta</div>
+        </div>
+      </div>
+
+      <div class="product-card" onclick="selectProduct(this, 'basic')" id="prod-basic">
+        <div class="product-left">
+          <span class="product-icon">🎓</span>
+          <div>
+            <div class="product-name">Training Basic</div>
+            <div class="product-desc">Audio protocols + esercizi + tracking</div>
+          </div>
+        </div>
+        <div>
+          <div class="product-price">€39</div>
+          <div class="product-period">/mese</div>
+        </div>
+      </div>
+
+      <div class="product-card" onclick="selectProduct(this, 'premium')" id="prod-premium">
+        <div class="product-left">
+          <span class="product-icon">⭐</span>
+          <div>
+            <div class="product-name">Premium + Coaching</div>
+            <div class="product-desc">Tutto + 2 call/mese con Giulia</div>
+          </div>
+        </div>
+        <div>
+          <div class="product-price">€199</div>
+          <div class="product-period">/mese</div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- FORM -->
+    <div class="form-card">
+
+      <div class="summary">
+        <span class="summary-name" id="summary-name">Assessment Neurocognitivo</span>
+        <span class="summary-price" id="summary-price">€79</span>
+      </div>
+
+      <label class="form-label">Nome e cognome</label>
+      <input class="form-input" type="text" id="customer-name" placeholder="Giulia Rossi">
+
+      <label class="form-label">Email</label>
+      <input class="form-input" type="email" id="customer-email" placeholder="nome@email.com">
+
+      <label class="form-label">Carta di credito / debito</label>
+      <div class="stripe-wrap" id="card-element"></div>
+
+      <div class="error-msg" id="error-msg"></div>
+
+      <button class="btn-pay" id="pay-btn" onclick="handlePayment()">
+        🔒 Paga ora
+      </button>
+
+      <div class="secure-note">
+        🔒 Pagamento sicuro via Stripe · I tuoi dati non vengono mai salvati
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+<script>
+  // ===== STRIPE SETUP =====
+  const stripe = Stripe('pk_live_51PjNztRuMkkWWVJ6w5bbjYUDlx3jyAmJ0ysXau7ZILRHVFqHbVRb2y1FePEnZzrh4H61ts8668lN5ZUFXk29boDP00QbxVYvTE');
+  const elements = stripe.elements({
+    appearance: {
+      theme: 'night',
+      variables: {
+        colorPrimary: '#c9a84c',
+        colorBackground: '#243850',
+        colorText: '#f5f3ee',
+        colorDanger: '#e86060',
+        fontFamily: '-apple-system, BlinkMacSystemFont, Segoe UI, sans-serif',
+        borderRadius: '10px',
+      }
+    }
+  });
+
+  const cardElement = elements.create('card', {
+    style: {
+      base: {
+        color: '#f5f3ee',
+        fontFamily: '-apple-system, sans-serif',
+        fontSize: '15px',
+        '::placeholder': { color: '#8a9bb0' }
+      }
+    }
+  });
+
+  cardElement.mount('#card-element');
+
+  cardElement.on('focus', () => document.getElementById('card-element').parentElement.classList.add('focused'));
+  cardElement.on('blur', () => document.getElementById('card-element').parentElement.classList.remove('focused'));
+
+  // ===== PRODUCTS =====
+  const products = {
+    assessment: { name: 'Assessment Neurocognitivo', price: '€79', amount: 7900, currency: 'eur', mode: 'payment' },
+    basic: { name: 'Training Basic', price: '€39/mese', amount: 3900, currency: 'eur', mode: 'subscription' },
+    premium: { name: 'Premium + Coaching', price: '€199/mese', amount: 19900, currency: 'eur', mode: 'subscription' }
+  };
+
+  let selectedProduct = 'assessment';
+
+  function selectProduct(el, key) {
+    document.querySelectorAll('.product-card').forEach(c => c.classList.remove('selected'));
+    el.classList.add('selected');
+    selectedProduct = key;
+    const p = products[key];
+    document.getElementById('summary-name').textContent = p.name;
+    document.getElementById('summary-price').textContent = p.price;
+  }
+
+  // ===== PAYMENT =====
+  async function handlePayment() {
+    const name = document.getElementById('customer-name').value.trim();
+    const email = document.getElementById('customer-email').value.trim();
+    const errEl = document.getElementById('error-msg');
+    const btn = document.getElementById('pay-btn');
+
+    errEl.style.display = 'none';
+
+    if (!name) { showError('Inserisci il tuo nome'); return; }
+    if (!email || !email.includes('@')) { showError('Inserisci un\'email valida'); return; }
+
+    btn.disabled = true;
+    btn.textContent = 'Elaborazione...';
+
+    // Create PaymentMethod
+    const { paymentMethod, error } = await stripe.createPaymentMethod({
+      type: 'card',
+      card: cardElement,
+      billing_details: { name, email }
+    });
+
+    if (error) {
+      showError(error.message);
+      btn.disabled = false;
+      btn.innerHTML = '🔒 Paga ora';
+      return;
+    }
+
+    // For MVP: redirect to Stripe Payment Link
+    // (Full server-side integration requires a backend)
+    const links = {
+      assessment: 'https://buy.stripe.com/dRmaEZ1O9eLa4lq1Kd28805',
+      basic: 'https://buy.stripe.com/28EaEZdwR8mMcRW60t28806',
+      premium: 'https://buy.stripe.com/dRm28t0K56eE19e3Sl28807'
+    };
+
+    // Save email to MailerLite before redirect
+    saveToMailerLite(email, name);
+
+    // Redirect to Stripe Payment Link
+    window.location.href = links[selectedProduct];
+  }
+
+  function showError(msg) {
+    const el = document.getElementById('error-msg');
+    el.textContent = msg;
+    el.style.display = 'block';
+  }
+
+  function saveToMailerLite(email, name) {
+    fetch('https://api.mailerlite.com/api/v2/subscribers', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-MailerLite-ApiKey': 'SOSTITUISCI_CON_TUO_API_KEY'
+      },
+      body: JSON.stringify({
+        email,
+        name,
+        resubscribe: true,
+        fields: { source: 'checkout', product: selectedProduct },
+        groups: ['SOSTITUISCI_CON_TUO_GROUP_ID']
+      })
+    }).catch(() => {});
+  }
+
+  // Check success redirect
+  const params = new URLSearchParams(window.location.search);
+  if (params.get('success') === 'true') {
+    document.getElementById('checkout-form').style.display = 'none';
+    document.getElementById('success').classList.add('show');
+    const prod = params.get('product') || 'assessment';
+    if (prod === 'assessment') {
+      document.getElementById('success-msg').textContent = 'Il tuo Assessment è pronto. Inizia adesso — 6 test in 15 minuti.';
+    }
+  }
+</script>
+</body>
+</html>

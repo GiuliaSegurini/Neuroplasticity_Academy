@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mini Training — Neuroplasticity Training Academy</title>
+  <style>
+    :root {
+      --navy: #0d1b2a;
+      --navy-mid: #1b2d42;
+      --navy-light: #243850;
+      --gold: #c9a84c;
+      --teal: #3ecfcf;
+      --rose: #e8748a;
+      --green: #6bcf7f;
+      --white: #f5f3ee;
+      --grey: #8a9bb0;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: var(--navy);
+      color: var(--white);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 24px 16px;
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 24px;
+      max-width: 400px;
+    }
+
+    .eyebrow {
+      font-size: 10px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 10px;
+    }
+
+    h1 { font-size: 24px; font-weight: 800; margin-bottom: 8px; }
+    .sub { font-size: 14px; color: var(--grey); line-height: 1.5; }
+
+    /* GAME CARD */
+    .game-card {
+      background: var(--navy-mid);
+      border-radius: 16px;
+      padding: 28px 24px;
+      max-width: 420px;
+      width: 100%;
+      border: 1px solid rgba(201,168,76,0.15);
+    }
+
+    /* TAB SELECTOR */
+    .game-tabs {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-bottom: 24px;
+    }
+
+    .tab-btn {
+      padding: 10px;
+      background: var(--navy-light);
+      border: 1px solid transparent;
+      border-radius: 8px;
+      color: var(--grey);
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .tab-btn.active { border-color: var(--gold); color: var(--gold); background: rgba(201,168,76,0.08); }
+
+    /* MEMORY GAME */
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      margin: 20px 0;
+    }
+
+    .mem-card {
+      aspect-ratio: 1;
+      background: var(--navy-light);
+      border: 2px solid rgba(255,255,255,0.1);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 26px;
+      cursor: pointer;
+      transition: all 0.2s;
+      user-select: none;
+    }
+
+    .mem-card.flipped {
+      background: var(--navy);
+      border-color: var(--gold);
+    }
+
+    .mem-card.matched {
+      background: rgba(107,207,127,0.15);
+      border-color: var(--green);
+    }
+
+    .mem-card:active { transform: scale(0.94); }
+
+    /* RHYTHM GAME */
+    .beat-display {
+      text-align: center;
+      margin: 20px 0;
+    }
+
+    .beat-icon {
+      font-size: 72px;
+      display: block;
+      transition: transform 0.05s, opacity 0.05s;
+      margin-bottom: 10px;
+    }
+
+    .beat-icon.on { transform: scale(1.2); }
+
+    .bpm-label { font-size: 12px; color: var(--grey); }
+
+    .tap-btn {
+      width: 100%;
+      padding: 52px 20px;
+      background: var(--navy-light);
+      border: 2px solid rgba(255,255,255,0.1);
+      border-radius: 14px;
+      color: var(--white);
+      font-size: 18px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.08s;
+      display: block;
+      text-align: center;
+      margin: 12px 0;
+    }
+
+    .tap-btn:active { background: rgba(201,168,76,0.2); border-color: var(--gold); transform: scale(0.97); }
+
+    /* HUD */
+    .hud {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      margin: 16px 0;
+    }
+
+    .hud-box {
+      background: var(--navy-light);
+      border-radius: 10px;
+      padding: 10px 8px;
+      text-align: center;
+    }
+
+    .hud-val { font-size: 22px; font-weight: 800; color: var(--gold); }
+    .hud-lbl { font-size: 10px; color: var(--grey); margin-top: 2px; }
+
+    /* FEEDBACK BAR */
+    .feedback-bar {
+      text-align: center;
+      min-height: 32px;
+      font-size: 15px;
+      font-weight: 600;
+      margin: 12px 0;
+    }
+
+    .feedback-bar.good { color: var(--green); }
+    .feedback-bar.bad { color: var(--rose); }
+
+    /* TIMER BAR */
+    .timer-bar {
+      width: 100%;
+      height: 4px;
+      background: var(--navy-light);
+      border-radius: 4px;
+      overflow: hidden;
+      margin-bottom: 16px;
+    }
+
+    .timer-fill {
+      height: 100%;
+      background: var(--teal);
+      border-radius: 4px;
+      transition: width 1s linear;
+      width: 100%;
+    }
+
+    /* BUTTONS */
+    .btn-primary {
+      width: 100%;
+      padding: 15px;
+      background: var(--gold);
+      color: var(--navy);
+      border: none;
+      border-radius: 10px;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.15s;
+      margin-top: 8px;
+    }
+
+    .btn-primary:hover { background: #e0bc60; }
+    .btn-primary:active { transform: scale(0.98); }
+
+    .btn-ghost {
+      width: 100%;
+      padding: 12px;
+      background: transparent;
+      color: var(--grey);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 10px;
+      font-size: 14px;
+      cursor: pointer;
+      margin-top: 8px;
+      transition: all 0.15s;
+    }
+
+    .btn-ghost:hover { border-color: var(--grey); color: var(--white); }
+
+    /* RESULTS */
+    .result-section {
+      display: none;
+      text-align: center;
+      margin-top: 20px;
+    }
+
+    .result-section.show { display: block; }
+
+    .score-big {
+      font-size: 56px;
+      font-weight: 800;
+      color: var(--gold);
+      display: block;
+      margin: 12px 0;
+    }
+
+    .result-msg { font-size: 15px; color: var(--grey); margin-bottom: 20px; }
+
+    .upsell-box {
+      background: var(--navy-light);
+      border-radius: 12px;
+      padding: 20px;
+      border: 1px solid rgba(62,207,207,0.2);
+      margin-top: 20px;
+      text-align: left;
+    }
+
+    .upsell-box p { font-size: 14px; color: var(--grey); line-height: 1.6; margin-bottom: 14px; }
+
+    .hidden { display: none !important; }
+  </style>
+</head>
+<body>
+
+  <div class="header">
+    <p class="eyebrow">Neuroplasticity Training Academy · Mini Training</p>
+    <h1>🎮 Allena il cervello</h1>
+    <p class="sub">Un assaggio del training completo. Scegli il tuo esercizio.</p>
+  </div>
+
+  <div class="game-card">
+
+    <!-- TABS -->
+    <div class="game-tabs">
+      <button class="tab-btn active" onclick="switchGame('memory')">🧠 Memoria</button>
+      <button class="tab-btn" onclick="switchGame('rhythm')">🥁 Ritmo</button>
+    </div>
+
+    <!-- TIMER BAR -->
+    <div class="timer-bar"><div class="timer-fill" id="timer-fill"></div></div>
+
+    <!-- ===== MEMORY GAME ===== -->
+    <div id="mem-game">
+      <p style="font-size:13px; color:var(--grey); margin-bottom:16px;">Trova le coppie. 60 secondi. Difficoltà adattiva.</p>
+      <div class="card-grid" id="card-grid"></div>
+      <div class="feedback-bar" id="mem-feedback"></div>
+      <div class="hud">
+        <div class="hud-box"><div class="hud-val" id="mem-pairs">0</div><div class="hud-lbl">Coppie</div></div>
+        <div class="hud-box"><div class="hud-val" id="mem-score">0</div><div class="hud-lbl">Score</div></div>
+        <div class="hud-box"><div class="hud-val" id="mem-time">60</div><div class="hud-lbl">Secondi</div></div>
+      </div>
+      <button class="btn-primary" id="mem-start-btn" onclick="startMemoryGame()">Inizia →</button>
+    </div>
+
+    <!-- ===== RHYTHM GAME ===== -->
+    <div id="rhythm-game" class="hidden">
+      <p style="font-size:13px; color:var(--grey); margin-bottom:16px;">Premi TAP in sincronizzazione con il battito. Più preciso = più score.</p>
+      <div class="beat-display">
+        <span class="beat-icon" id="beat-icon">♪</span>
+        <div class="bpm-label" id="bpm-label">BPM: 90</div>
+      </div>
+      <button class="tap-btn" id="tap-btn" onclick="tap()">TAP</button>
+      <div class="feedback-bar" id="rhythm-feedback"></div>
+      <div class="hud">
+        <div class="hud-box"><div class="hud-val" id="rhythm-acc">—</div><div class="hud-lbl">Timing ms</div></div>
+        <div class="hud-box"><div class="hud-val" id="rhythm-score">0</div><div class="hud-lbl">Score</div></div>
+        <div class="hud-box"><div class="hud-val" id="rhythm-streak">0</div><div class="hud-lbl">Streak</div></div>
+      </div>
+      <button class="btn-primary" id="rhythm-start-btn" onclick="startRhythm()">Inizia →</button>
+    </div>
+
+    <!-- RESULTS -->
+    <div class="result-section" id="game-results">
+      <p style="font-size:12px; color:var(--grey);">Il tuo risultato</p>
+      <span class="score-big" id="final-score">—</span>
+      <p class="result-msg" id="result-msg">—</p>
+
+      <div class="upsell-box">
+        <p>Questo è un singolo esercizio di un training da 30 giorni. Il programma completo include protocolli audio 40Hz, theta waves, coordinazione bimanuale e tracking dei progressi scientificamente misurati.</p>
+        <button class="btn-primary" onclick="window.open('https://buy.stripe.com/dRmaEZ1O9eLa4lq1Kd28805','_blank')">
+          Academy Completa (€79 Assessment + Training) →
+        </button>
+        <button class="btn-ghost" onclick="resetGame()">Gioca ancora</button>
+        <button class="btn-ghost" onclick="window.location.href='index.html'" style="margin-top:6px;">Torna alla home</button>
+      </div>
+    </div>
+
+  </div><!-- /game-card -->
+
+  <script>
+    // ===== AUDIO =====
+    const ac = new (window.AudioContext || window.webkitAudioContext)();
+
+    function beep(freq = 440, type = 'sine', vol = 0.3, dur = 0.12) {
+      const osc = ac.createOscillator();
+      const g = ac.createGain();
+      osc.type = type;
+      osc.frequency.value = freq;
+      g.gain.setValueAtTime(vol, ac.currentTime);
+      g.gain.exponentialRampToValueAtTime(0.001, ac.currentTime + dur);
+      osc.connect(g); g.connect(ac.destination);
+      osc.start(); osc.stop(ac.currentTime + dur);
+    }
+
+    function chord(base) {
+      [1, 1.25, 1.5].forEach((r, i) => setTimeout(() => beep(base * r, 'sine', 0.2, 0.2), i * 60));
+    }
+
+    // 40Hz vagal background (gentle, low volume)
+    function start40Hz() {
+      const osc = ac.createOscillator();
+      const g = ac.createGain();
+      osc.frequency.value = 40;
+      osc.type = 'sine';
+      g.gain.value = 0.01; // Very subtle
+      osc.connect(g); g.connect(ac.destination);
+      osc.start();
+      return osc;
+    }
+
+    let bgOsc = null;
+
+    // ===== TABS =====
+    let currentGame = 'memory';
+
+    function switchGame(game) {
+      currentGame = game;
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      event.target.classList.add('active');
+      document.getElementById('mem-game').classList.toggle('hidden', game !== 'memory');
+      document.getElementById('rhythm-game').classList.toggle('hidden', game !== 'rhythm');
+      document.getElementById('game-results').classList.remove('show');
+      document.getElementById('timer-fill').style.width = '100%';
+      resetTimer();
+    }
+
+    // ===== MEMORY GAME =====
+    const emojis = ['🍎','🌙','⭐','🎵','🌊','💎','🔥','🌸'];
+    let memCards = [], flipped = [], matched = 0, memGameScore = 0, memPairs = 0;
+    let memTimeLeft = 60, memTimerInterval = null, memGameActive = false;
+
+    function startMemoryGame() {
+      if (bgOsc) bgOsc.stop();
+      bgOsc = start40Hz();
+
+      document.getElementById('mem-start-btn').classList.add('hidden');
+      matched = 0; memGameScore = 0; memPairs = 0; memTimeLeft = 60;
+      flipped = [];
+      memGameActive = true;
+
+      const pairs = [...emojis, ...emojis].sort(() => Math.random() - 0.5);
+      memCards = pairs.map((emoji, i) => ({ id: i, emoji, isFlipped: false, isMatched: false }));
+
+      renderCards();
+      startTimerBar(60);
+
+      memTimerInterval = setInterval(() => {
+        memTimeLeft--;
+        document.getElementById('mem-time').textContent = memTimeLeft;
+        if (memTimeLeft <= 0) endMemoryGame();
+      }, 1000);
+    }
+
+    function renderCards() {
+      const grid = document.getElementById('card-grid');
+      grid.innerHTML = '';
+      memCards.forEach((card, i) => {
+        const el = document.createElement('div');
+        el.className = 'mem-card' + (card.isFlipped || card.isMatched ? ' flipped' : '') + (card.isMatched ? ' matched' : '');
+        el.textContent = (card.isFlipped || card.isMatched) ? card.emoji : '';
+        el.onclick = () => flipCard(i);
+        grid.appendChild(el);
+      });
+    }
+
+    function flipCard(i) {
+      if (!memGameActive) return;
+      const card = memCards[i];
+      if (card.isFlipped || card.isMatched || flipped.length >= 2) return;
+
+      card.isFlipped = true;
+      flipped.push(i);
+      beep(440 + i * 30, 'sine', 0.2, 0.1);
+      renderCards();
+
+      if (flipped.length === 2) {
+        const [a, b] = flipped;
+        if (memCards[a].emoji === memCards[b].emoji) {
+          memCards[a].isMatched = memCards[b].isMatched = true;
+          matched++;
+          memPairs++;
+          memGameScore += 100 + memTimeLeft;
+          document.getElementById('mem-pairs').textContent = memPairs;
+          document.getElementById('mem-score').textContent = memGameScore;
+          document.getElementById('mem-feedback').textContent = '✓ Coppia!';
+          document.getElementById('mem-feedback').className = 'feedback-bar good';
+          chord(523);
+          flipped = [];
+          renderCards();
+          if (matched === emojis.length) endMemoryGame();
+        } else {
+          document.getElementById('mem-feedback').textContent = '✗ Riprova';
+          document.getElementById('mem-feedback').className = 'feedback-bar bad';
+          beep(220, 'sawtooth', 0.15, 0.2);
+          setTimeout(() => {
+            memCards[a].isFlipped = memCards[b].isFlipped = false;
+            flipped = [];
+            renderCards();
+          }, 700);
+        }
+      }
+    }
+
+    function endMemoryGame() {
+      memGameActive = false;
+      clearInterval(memTimerInterval);
+      if (bgOsc) { bgOsc.stop(); bgOsc = null; }
+      showFinalResult(memGameScore, memPairs + '/8 coppie trovate');
+    }
+
+    // ===== RHYTHM GAME =====
+    let bpm = 90, beatInterval = null, lastBeatTime = 0, rhythmScore = 0, rhythmStreak = 0;
+    let rhythmTimeLeft = 60, rhythmTimerInterval = null, rhythmActive = false;
+
+    function startRhythm() {
+      if (bgOsc) bgOsc.stop();
+      bgOsc = start40Hz();
+
+      document.getElementById('rhythm-start-btn').classList.add('hidden');
+      rhythmScore = 0; rhythmStreak = 0; rhythmTimeLeft = 60; bpm = 90;
+      rhythmActive = true;
+
+      document.getElementById('bpm-label').textContent = 'BPM: ' + bpm;
+      startTimerBar(60);
+      pulseBeat();
+
+      rhythmTimerInterval = setInterval(() => {
+        rhythmTimeLeft--;
+        if (rhythmTimeLeft <= 0) endRhythm();
+        // Increase BPM gradually
+        if (rhythmTimeLeft % 15 === 0 && bpm < 140) {
+          bpm += 10;
+          document.getElementById('bpm-label').textContent = 'BPM: ' + bpm;
+          clearInterval(beatInterval);
+          pulseBeat();
+        }
+      }, 1000);
+    }
+
+    function pulseBeat() {
+      const ms = Math.round(60000 / bpm);
+      lastBeatTime = Date.now();
+      beatInterval = setInterval(() => {
+        lastBeatTime = Date.now();
+        const icon = document.getElementById('beat-icon');
+        icon.classList.add('on');
+        beep(220, 'sine', 0.3, 0.08);
+        setTimeout(() => icon.classList.remove('on'), 80);
+      }, ms);
+    }
+
+    function tap() {
+      if (!rhythmActive) return;
+      const now = Date.now();
+      const ms = Math.round(60000 / bpm);
+      const timeSinceBeat = now - lastBeatTime;
+      const error = Math.min(timeSinceBeat, ms - timeSinceBeat);
+
+      document.getElementById('rhythm-acc').textContent = error + 'ms';
+
+      let pts = 0, msg = '', cls = '';
+      if (error < 40) { pts = 50; msg = '🔥 Perfect!'; cls = 'good'; rhythmStreak++; }
+      else if (error < 100) { pts = 30; msg = '✓ Good'; cls = 'good'; rhythmStreak++; }
+      else if (error < 200) { pts = 10; msg = '~ OK'; cls = ''; rhythmStreak = 0; }
+      else { pts = 0; msg = '✗ Off beat'; cls = 'bad'; rhythmStreak = 0; }
+
+      rhythmScore += pts * (1 + rhythmStreak * 0.1);
+      document.getElementById('rhythm-score').textContent = Math.round(rhythmScore);
+      document.getElementById('rhythm-streak').textContent = rhythmStreak;
+      document.getElementById('rhythm-feedback').textContent = msg;
+      document.getElementById('rhythm-feedback').className = 'feedback-bar ' + cls;
+
+      if (cls === 'good') beep(660, 'sine', 0.2, 0.08);
+      else if (cls === 'bad') beep(200, 'sawtooth', 0.15, 0.1);
+    }
+
+    function endRhythm() {
+      rhythmActive = false;
+      clearInterval(beatInterval);
+      clearInterval(rhythmTimerInterval);
+      if (bgOsc) { bgOsc.stop(); bgOsc = null; }
+      showFinalResult(Math.round(rhythmScore), 'streak massima: ' + rhythmStreak);
+    }
+
+    // ===== TIMER BAR =====
+    let timerBarInterval = null;
+
+    function startTimerBar(seconds) {
+      const fill = document.getElementById('timer-fill');
+      fill.style.transition = 'none';
+      fill.style.width = '100%';
+      setTimeout(() => {
+        fill.style.transition = `width ${seconds}s linear`;
+        fill.style.width = '0%';
+      }, 50);
+    }
+
+    function resetTimer() {
+      const fill = document.getElementById('timer-fill');
+      fill.style.transition = 'none';
+      fill.style.width = '100%';
+    }
+
+    // ===== FINAL RESULT =====
+    function showFinalResult(score, detail) {
+      document.getElementById('game-results').classList.add('show');
+      document.getElementById('final-score').textContent = Math.round(score);
+      const msg = score >= 800 ? '🟢 Eccellente! Neuroplasticity attiva.' : score >= 400 ? '🟡 Buono. Margine di miglioramento.' : '🔴 Inizia il training. Risultati in 30 giorni.';
+      document.getElementById('result-msg').textContent = msg + ' (' + detail + ')';
+      chord(523);
+    }
+
+    function resetGame() {
+      document.getElementById('game-results').classList.remove('show');
+      document.getElementById('mem-start-btn').classList.remove('hidden');
+      document.getElementById('rhythm-start-btn').classList.remove('hidden');
+      document.getElementById('mem-feedback').textContent = '';
+      document.getElementById('rhythm-feedback').textContent = '';
+      document.getElementById('card-grid').innerHTML = '';
+      document.getElementById('mem-pairs').textContent = '0';
+      document.getElementById('mem-score').textContent = '0';
+      document.getElementById('mem-time').textContent = '60';
+      document.getElementById('rhythm-score').textContent = '0';
+      document.getElementById('rhythm-streak').textContent = '0';
+      document.getElementById('rhythm-acc').textContent = '—';
+      resetTimer();
+    }
+  </script>
+</body>
+</html>

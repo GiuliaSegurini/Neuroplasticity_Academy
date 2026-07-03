@@ -1,0 +1,13 @@
+{
+  "cleanUrls": true,
+  "trailingSlash": false,
+  "routes": [
+    { "src": "/assessment", "dest": "/assessment.html" },
+    { "src": "/training", "dest": "/memory-game.html" },
+    { "src": "/game", "dest": "/memory-game.html" },
+    { "src": "/respiro", "dest": "/breathing.html" },
+    { "src": "/breathing", "dest": "/breathing.html" },
+    { "src": "/checkout", "dest": "/checkout.html" },
+    { "src": "/acquista", "dest": "/checkout.html" }
+  ]
+}

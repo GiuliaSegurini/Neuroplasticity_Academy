@@ -1,0 +1,843 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Respiro & Sistema Nervoso — Neuroplasticity Training Academy</title>
+  <style>
+    :root {
+      --navy: #0d1b2a;
+      --navy-mid: #1b2d42;
+      --navy-light: #243850;
+      --gold: #c9a84c;
+      --teal: #3ecfcf;
+      --rose: #e8748a;
+      --green: #6bcf7f;
+      --white: #f5f3ee;
+      --grey: #8a9bb0;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: var(--navy);
+      color: var(--white);
+      min-height: 100vh;
+    }
+
+    /* NAV */
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 18px 24px;
+      border-bottom: 1px solid rgba(201,168,76,0.15);
+    }
+
+    .logo {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--gold);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      text-decoration: none;
+    }
+
+    .logo span { color: var(--white); }
+
+    nav a.back {
+      font-size: 13px;
+      color: var(--grey);
+      text-decoration: none;
+    }
+
+    nav a.back:hover { color: var(--white); }
+
+    /* HERO */
+    .hero {
+      text-align: center;
+      padding: 50px 24px 32px;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .eyebrow {
+      font-size: 10px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--teal);
+      margin-bottom: 14px;
+    }
+
+    .hero h1 {
+      font-size: clamp(26px, 5vw, 40px);
+      font-weight: 800;
+      line-height: 1.15;
+      margin-bottom: 14px;
+    }
+
+    .hero h1 em { font-style: normal; color: var(--gold); }
+
+    .hero p {
+      font-size: 15px;
+      color: var(--grey);
+      line-height: 1.65;
+      max-width: 480px;
+      margin: 0 auto;
+    }
+
+    /* PROTOCOL SELECTOR */
+    .protocol-selector {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+      max-width: 560px;
+      margin: 32px auto 0;
+      padding: 0 20px;
+    }
+
+    @media (max-width: 480px) {
+      .protocol-selector { grid-template-columns: 1fr; }
+    }
+
+    .proto-card {
+      background: var(--navy-mid);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 12px;
+      padding: 16px;
+      cursor: pointer;
+      transition: all 0.2s;
+      text-align: left;
+    }
+
+    .proto-card:hover { border-color: rgba(201,168,76,0.4); }
+
+    .proto-card.selected {
+      border-color: var(--gold);
+      background: rgba(201,168,76,0.08);
+    }
+
+    .proto-icon { font-size: 22px; margin-bottom: 8px; display: block; }
+    .proto-name { font-size: 14px; font-weight: 700; margin-bottom: 4px; }
+    .proto-desc { font-size: 11px; color: var(--grey); line-height: 1.4; }
+
+    .proto-tag {
+      display: inline-block;
+      font-size: 9px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 2px 7px;
+      border-radius: 50px;
+      margin-top: 8px;
+      font-weight: 600;
+    }
+
+    .tag-instant { background: rgba(232,116,138,0.2); color: var(--rose); }
+    .tag-focus { background: rgba(62,207,207,0.15); color: var(--teal); }
+    .tag-energy { background: rgba(240,208,128,0.15); color: #f0d080; }
+    .tag-sleep { background: rgba(107,207,127,0.15); color: var(--green); }
+
+    /* BREATHE ZONE */
+    .breathe-zone {
+      max-width: 420px;
+      margin: 36px auto 0;
+      padding: 0 20px;
+      text-align: center;
+    }
+
+    /* CIRCLE */
+    .circle-wrap {
+      position: relative;
+      width: 220px;
+      height: 220px;
+      margin: 0 auto 28px;
+    }
+
+    .circle-svg {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      transform: rotate(-90deg);
+    }
+
+    .circle-track {
+      fill: none;
+      stroke: rgba(255,255,255,0.06);
+      stroke-width: 6;
+    }
+
+    .circle-progress {
+      fill: none;
+      stroke: var(--teal);
+      stroke-width: 6;
+      stroke-linecap: round;
+      stroke-dasharray: 565;
+      stroke-dashoffset: 565;
+      transition: stroke-dashoffset 0.1s linear, stroke 0.3s;
+    }
+
+    .circle-inner {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+    }
+
+    .circle-bubble {
+      width: 140px;
+      height: 140px;
+      border-radius: 50%;
+      background: rgba(62,207,207,0.1);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.1s, background 0.3s;
+    }
+
+    .circle-phase {
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--teal);
+    }
+
+    .circle-count {
+      font-size: 40px;
+      font-weight: 800;
+      color: var(--white);
+      line-height: 1;
+      margin-top: 4px;
+    }
+
+    /* PHASE INDICATOR */
+    .phase-dots {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      margin-bottom: 20px;
+    }
+
+    .phase-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--navy-light);
+      transition: background 0.3s;
+    }
+
+    .phase-dot.active { background: var(--teal); }
+    .phase-dot.done { background: rgba(62,207,207,0.4); }
+
+    /* INSTRUCTION */
+    .phase-instruction {
+      font-size: 15px;
+      font-weight: 600;
+      min-height: 24px;
+      margin-bottom: 20px;
+      color: var(--white);
+    }
+
+    /* ROUND COUNTER */
+    .round-info {
+      font-size: 12px;
+      color: var(--grey);
+      margin-bottom: 20px;
+    }
+
+    /* BUTTONS */
+    .btn-primary {
+      width: 100%;
+      padding: 15px;
+      background: var(--gold);
+      color: var(--navy);
+      border: none;
+      border-radius: 12px;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.15s;
+      margin-bottom: 10px;
+    }
+
+    .btn-primary:hover { background: #e0bc60; }
+    .btn-primary:active { transform: scale(0.98); }
+    .btn-primary:disabled { opacity: 0.4; cursor: not-allowed; }
+
+    .btn-ghost {
+      width: 100%;
+      padding: 12px;
+      background: transparent;
+      color: var(--grey);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 12px;
+      font-size: 14px;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .btn-ghost:hover { border-color: var(--grey); color: var(--white); }
+
+    /* SCIENCE INFO */
+    .science-box {
+      background: var(--navy-mid);
+      border-radius: 12px;
+      padding: 18px;
+      margin-top: 20px;
+      border: 1px solid rgba(62,207,207,0.1);
+      text-align: left;
+    }
+
+    .science-box .s-label {
+      font-size: 9px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--teal);
+      margin-bottom: 8px;
+    }
+
+    .science-box p {
+      font-size: 13px;
+      color: var(--grey);
+      line-height: 1.6;
+    }
+
+    /* COMPLETION */
+    .completion {
+      display: none;
+      text-align: center;
+      padding: 20px 0;
+    }
+
+    .completion.show { display: block; }
+    .completion .big-icon { font-size: 56px; margin-bottom: 16px; }
+    .completion h2 { font-size: 22px; font-weight: 800; margin-bottom: 8px; }
+    .completion p { font-size: 14px; color: var(--grey); margin-bottom: 24px; line-height: 1.6; }
+
+    .email-form {
+      background: var(--navy-mid);
+      border-radius: 12px;
+      padding: 20px;
+      border: 1px solid rgba(201,168,76,0.2);
+      margin-bottom: 16px;
+    }
+
+    .email-form p {
+      font-size: 13px;
+      color: var(--grey);
+      margin-bottom: 14px;
+      text-align: left;
+    }
+
+    .email-form input {
+      width: 100%;
+      padding: 13px 16px;
+      background: var(--navy-light);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 10px;
+      color: var(--white);
+      font-size: 15px;
+      outline: none;
+      margin-bottom: 10px;
+    }
+
+    .email-form input:focus { border-color: var(--gold); }
+
+    .upsell-row {
+      background: var(--navy-light);
+      border-radius: 10px;
+      padding: 14px;
+      margin-top: 14px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      cursor: pointer;
+      border: 1px solid transparent;
+      transition: border-color 0.2s;
+    }
+
+    .upsell-row:hover { border-color: rgba(201,168,76,0.3); }
+
+    .upsell-row span { font-size: 22px; flex-shrink: 0; }
+    .upsell-row-text strong { font-size: 13px; display: block; margin-bottom: 2px; }
+    .upsell-row-text small { font-size: 11px; color: var(--grey); }
+
+    .hidden { display: none !important; }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <a href="index.html" class="logo">Neuroplasticity Training<span> Academy</span></a>
+    <a href="index.html" class="back">← Home</a>
+  </nav>
+
+  <!-- HERO -->
+  <div class="hero">
+    <p class="eyebrow">Biohacking del Respiro · Vagal Tone · Sistema Nervoso</p>
+    <h1>Il tuo sistema nervoso<br>si regola in <em>30 secondi.</em></h1>
+    <p>Protocolli di respirazione neuroscientificamente provati. Scegli il tuo obiettivo — il respiro fa il resto.</p>
+  </div>
+
+  <!-- PROTOCOL CARDS -->
+  <div class="protocol-selector">
+
+    <div class="proto-card selected" onclick="selectProtocol('sigh')" id="card-sigh">
+      <span class="proto-icon">😮‍💨</span>
+      <div class="proto-name">Physiological Sigh</div>
+      <div class="proto-desc">Doppio respiro nasale + lunga espirazione. Abbassa il cortisolo in 30 secondi.</div>
+      <span class="proto-tag tag-instant">⚡ Effetto immediato</span>
+    </div>
+
+    <div class="proto-card" onclick="selectProtocol('box')" id="card-box">
+      <span class="proto-icon">⬛</span>
+      <div class="proto-name">Box Breathing</div>
+      <div class="proto-desc">4-4-4-4. Usato da Navy SEAL per focus e calma sotto pressione.</div>
+      <span class="proto-tag tag-focus">🎯 Focus & Calma</span>
+    </div>
+
+    <div class="proto-card" onclick="selectProtocol('478')" id="card-478">
+      <span class="proto-icon">🌙</span>
+      <div class="proto-name">4-7-8 Vagal</div>
+      <div class="proto-desc">Attiva il nervo vago, abbassa la frequenza cardiaca. Perfetto prima di dormire.</div>
+      <span class="proto-tag tag-sleep">😴 Sonno & Calma</span>
+    </div>
+
+    <div class="proto-card" onclick="selectProtocol('wim')" id="card-wim">
+      <span class="proto-icon">🔥</span>
+      <div class="proto-name">Wim Hof Round</div>
+      <div class="proto-desc">30 respiri profondi + ritenzione. Attiva sistema immunitario e dopamina.</div>
+      <span class="proto-tag tag-energy">⚡ Energia & Vitalità</span>
+    </div>
+
+  </div>
+
+  <!-- BREATHE ZONE -->
+  <div class="breathe-zone">
+
+    <!-- SCIENCE BOX -->
+    <div class="science-box" id="science-box">
+      <div class="s-label">🔬 Neuroscienze</div>
+      <p id="science-text">Il Physiological Sigh (Huberman Lab, Stanford 2021) è il modo più rapido per abbassare il cortisolo. Il doppio respiro nasale massimizza l'input di ossigeno, la lunga espirazione attiva il nervo vago e riporta il sistema nervoso al parasympathetic in 30 secondi.</p>
+    </div>
+
+    <!-- CIRCLE ANIMATION -->
+    <div style="margin-top: 28px;">
+      <div class="circle-wrap" id="circle-wrap">
+        <svg class="circle-svg" viewBox="0 0 200 200">
+          <circle class="circle-track" cx="100" cy="100" r="90"/>
+          <circle class="circle-progress" id="circle-progress" cx="100" cy="100" r="90"/>
+        </svg>
+        <div class="circle-inner">
+          <div class="circle-bubble" id="circle-bubble">
+            <div class="circle-phase" id="circle-phase">Pronto</div>
+            <div class="circle-count" id="circle-count">—</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PHASE DOTS -->
+      <div class="phase-dots" id="phase-dots"></div>
+
+      <!-- INSTRUCTION -->
+      <div class="phase-instruction" id="phase-instruction">Scegli un protocollo e premi Inizia</div>
+
+      <!-- ROUND INFO -->
+      <div class="round-info" id="round-info"></div>
+
+      <!-- BUTTONS -->
+      <div id="controls">
+        <button class="btn-primary" id="start-btn" onclick="startBreathing()">Inizia →</button>
+        <button class="btn-ghost" id="stop-btn" onclick="stopBreathing()" style="display:none;">Ferma</button>
+      </div>
+
+      <!-- COMPLETION -->
+      <div class="completion" id="completion">
+        <div class="big-icon">✨</div>
+        <h2>Sessione completata</h2>
+        <p id="completion-msg">Il tuo sistema nervoso si è regolato. Prendi un momento per sentire la differenza.</p>
+
+        <div class="email-form">
+          <p>Vuoi ricevere i 4 protocolli completi + il piano di training settimanale?</p>
+          <input type="email" id="email-input" placeholder="nome@email.com">
+          <button class="btn-primary" onclick="submitEmail()">Invia i protocolli →</button>
+        </div>
+
+        <div class="upsell-row" onclick="window.location.href='assessment.html'">
+          <span>🧠</span>
+          <div class="upsell-row-text">
+            <strong>Misura il tuo sistema nervoso</strong>
+            <small>Assessment neurocognitivo completo (6 test) + protocollo audio personalizzato</small>
+          </div>
+        </div>
+
+        <div class="upsell-row" onclick="window.open('https://buy.stripe.com/dRmaEZ1O9eLa4lq1Kd28805', '_blank')" style="margin-top:10px;">
+          <span>🎓</span>
+          <div class="upsell-row-text">
+            <strong>Academy completa — €39/mese</strong>
+            <small>Training audio 40Hz, protocolli HRV, coordinazione attiva, tracking progressi</small>
+          </div>
+        </div>
+
+        <div class="upsell-row" onclick="window.open('https://calendly.com/[TUO-CALENDLY]', '_blank')" style="margin-top:10px;">
+          <span>🩺</span>
+          <div class="upsell-row-text">
+            <strong>Percorso clinico con Giulia</strong>
+            <small>Ansia, disregolazione emotiva, trauma, disturbi del sonno. Prenota un colloquio.</small>
+          </div>
+        </div>
+
+        <button class="btn-ghost" onclick="resetBreathing()" style="margin-top:16px;">Ripeti la sessione</button>
+      </div>
+
+    </div>
+  </div>
+
+  <div style="height: 60px;"></div>
+
+  <script>
+    // ===== PROTOCOLS =====
+    const protocols = {
+      sigh: {
+        name: 'Physiological Sigh',
+        rounds: 5,
+        phases: [
+          { label: 'Inspira', color: '#3ecfcf', duration: 2, scale: 1.0, offset: 0 },
+          { label: 'Inspira ancora', color: '#3ecfcf', duration: 1, scale: 1.15, offset: 0.33 },
+          { label: 'Espira lentamente', color: '#c9a84c', duration: 6, scale: 0.85, offset: 0.55, long: true }
+        ],
+        science: 'Il Physiological Sigh (Huberman Lab, Stanford 2021) è il modo più rapido per abbassare il cortisolo. Il doppio respiro nasale massimizza l\'ossigeno, la lunga espirazione attiva il nervo vago in 30 secondi.'
+      },
+      box: {
+        name: 'Box Breathing',
+        rounds: 6,
+        phases: [
+          { label: 'Inspira', color: '#3ecfcf', duration: 4, scale: 1.15, offset: 0 },
+          { label: 'Trattieni', color: '#c9a84c', duration: 4, scale: 1.15, offset: 0.25 },
+          { label: 'Espira', color: '#e8748a', duration: 4, scale: 0.85, offset: 0.5 },
+          { label: 'Trattieni', color: '#c9a84c', duration: 4, scale: 0.85, offset: 0.75 }
+        ],
+        science: 'Il Box Breathing bilancia il sistema nervoso autonomo. Usato da Navy SEAL e atleti d\'élite, sincronizza corteccia prefrontale e amigdala, producendo calma e lucidità sotto pressione.'
+      },
+      '478': {
+        name: '4-7-8 Vagal',
+        rounds: 4,
+        phases: [
+          { label: 'Inspira dal naso', color: '#3ecfcf', duration: 4, scale: 1.15, offset: 0 },
+          { label: 'Trattieni', color: '#c9a84c', duration: 7, scale: 1.1, offset: 0.22 },
+          { label: 'Espira dalla bocca', color: '#6bcf7f', duration: 8, scale: 0.8, offset: 0.61 }
+        ],
+        science: 'Il protocollo 4-7-8 (Dr. Andrew Weil) attiva il nervo vago tramite la lunga espirazione. Abbassa la frequenza cardiaca, riduce la pressione sanguigna e facilita l\'addormentamento in 5-10 minuti.'
+      },
+      wim: {
+        name: 'Wim Hof Round 1',
+        rounds: 1,
+        phases: [
+          { label: 'Respiro profondo', color: '#3ecfcf', duration: 1.5, scale: 1.2, offset: 0 },
+          { label: 'Lascia andare', color: '#e8748a', duration: 1.5, scale: 0.85, offset: 0.5 }
+        ],
+        totalBreaths: 30,
+        finalHold: { label: 'Trattieni', duration: 90 },
+        recovery: { label: 'Respiro di recupero', duration: 15 },
+        science: 'La tecnica Wim Hof aumenta temporaneamente la PH del sangue, attiva il sistema nervoso simpatico e rilascia adrenalina. Studi (Kox et al., PNAS 2014) mostrano aumento di epinefrina e riduzione delle citochine infiammatorie.'
+      }
+    };
+
+    let selectedProtocol = 'sigh';
+    let isRunning = false;
+    let animFrames = [];
+    let timeouts = [];
+
+    // ===== AUDIO ENGINE =====
+    const ac = new (window.AudioContext || window.webkitAudioContext)();
+
+    function tone(freq, type = 'sine', vol = 0.15, dur = 0.3) {
+      const osc = ac.createOscillator();
+      const g = ac.createGain();
+      osc.type = type;
+      osc.frequency.value = freq;
+      g.gain.setValueAtTime(vol, ac.currentTime);
+      g.gain.exponentialRampToValueAtTime(0.001, ac.currentTime + dur);
+      osc.connect(g); g.connect(ac.destination);
+      osc.start(); osc.stop(ac.currentTime + dur);
+    }
+
+    function inhaleSound() { tone(440, 'sine', 0.12, 0.4); }
+    function holdSound() { tone(330, 'sine', 0.08, 0.2); }
+    function exhaleSound() { tone(264, 'sine', 0.12, 0.5); }
+    function completionSound() {
+      [523, 659, 784, 1047].forEach((f, i) => setTimeout(() => tone(f, 'sine', 0.18, 0.3), i * 100));
+    }
+
+    // 40Hz background pulse (gentle vagal activation)
+    let vagalNode = null;
+    function startVagalTone() {
+      vagalNode = ac.createOscillator();
+      const g = ac.createGain();
+      vagalNode.frequency.value = 40;
+      vagalNode.type = 'sine';
+      g.gain.value = 0.008;
+      vagalNode.connect(g); g.connect(ac.destination);
+      vagalNode.start();
+    }
+
+    function stopVagalTone() {
+      if (vagalNode) { try { vagalNode.stop(); } catch(e) {} vagalNode = null; }
+    }
+
+    // ===== SELECT PROTOCOL =====
+    function selectProtocol(key) {
+      if (isRunning) return;
+      selectedProtocol = key;
+      document.querySelectorAll('.proto-card').forEach(c => c.classList.remove('selected'));
+      document.getElementById('card-' + key).classList.add('selected');
+      document.getElementById('science-text').textContent = protocols[key].science;
+      resetBreathing();
+    }
+
+    // ===== CIRCLE =====
+    const CIRCUMFERENCE = 2 * Math.PI * 90; // 565
+
+    function setCircle(pct, color) {
+      const offset = CIRCUMFERENCE * (1 - pct);
+      const el = document.getElementById('circle-progress');
+      el.style.strokeDashoffset = offset;
+      el.style.stroke = color;
+    }
+
+    function setBubble(scale, color) {
+      const el = document.getElementById('circle-bubble');
+      el.style.transform = `scale(${scale})`;
+      el.style.background = color + '20';
+    }
+
+    function setPhase(label, count) {
+      document.getElementById('circle-phase').textContent = label;
+      document.getElementById('circle-count').textContent = count;
+    }
+
+    // ===== PHASE DOTS =====
+    function buildDots(phases) {
+      const container = document.getElementById('phase-dots');
+      container.innerHTML = '';
+      phases.forEach((_, i) => {
+        const dot = document.createElement('div');
+        dot.className = 'phase-dot';
+        dot.id = 'dot-' + i;
+        container.appendChild(dot);
+      });
+    }
+
+    function activateDot(i) {
+      document.querySelectorAll('.phase-dot').forEach((d, j) => {
+        d.classList.remove('active', 'done');
+        if (j < i) d.classList.add('done');
+        if (j === i) d.classList.add('active');
+      });
+    }
+
+    // ===== MAIN ENGINE =====
+    function clearAllTimers() {
+      timeouts.forEach(t => clearTimeout(t));
+      timeouts = [];
+    }
+
+    function delay(ms) {
+      return new Promise(res => {
+        const t = setTimeout(res, ms);
+        timeouts.push(t);
+      });
+    }
+
+    async function runPhase(phase, phaseIdx, countdown) {
+      if (!isRunning) return;
+      activateDot(phaseIdx);
+      document.getElementById('phase-instruction').textContent = phase.label;
+
+      if (phase.label.includes('Inspira')) inhaleSound();
+      else if (phase.label.includes('Espira') || phase.label.includes('Lascia')) exhaleSound();
+      else holdSound();
+
+      setBubble(phase.scale, phase.color);
+
+      const dur = phase.duration * 1000;
+      const steps = dur / 50;
+      const start = Date.now();
+
+      for (let s = 0; s <= steps; s++) {
+        if (!isRunning) return;
+        const elapsed = Date.now() - start;
+        const progress = Math.min(elapsed / dur, 1);
+
+        setCircle(progress, phase.color);
+        const secondsLeft = Math.ceil(phase.duration * (1 - progress));
+        setPhase(phase.label, secondsLeft > 0 ? secondsLeft : '');
+
+        await delay(50);
+      }
+    }
+
+    async function startBreathing() {
+      if (ac.state === 'suspended') await ac.resume();
+      isRunning = true;
+
+      document.getElementById('start-btn').style.display = 'none';
+      document.getElementById('stop-btn').style.display = 'block';
+      document.getElementById('completion').classList.remove('show');
+      document.getElementById('science-box').classList.add('hidden');
+
+      startVagalTone();
+
+      const proto = protocols[selectedProtocol];
+      buildDots(proto.phases);
+
+      // WIM HOF special case
+      if (selectedProtocol === 'wim') {
+        await runWimHof(proto);
+      } else {
+        await runStandardProtocol(proto);
+      }
+    }
+
+    async function runStandardProtocol(proto) {
+      for (let round = 0; round < proto.rounds; round++) {
+        if (!isRunning) return;
+        document.getElementById('round-info').textContent = `Round ${round + 1} di ${proto.rounds}`;
+        for (let p = 0; p < proto.phases.length; p++) {
+          if (!isRunning) return;
+          await runPhase(proto.phases[p], p, proto.phases.length);
+        }
+      }
+      if (isRunning) finish(proto.name);
+    }
+
+    async function runWimHof(proto) {
+      // 30 breaths
+      for (let b = 0; b < proto.totalBreaths; b++) {
+        if (!isRunning) return;
+        document.getElementById('round-info').textContent = `Respiro ${b + 1} di ${proto.totalBreaths}`;
+        for (let p = 0; p < proto.phases.length; p++) {
+          if (!isRunning) return;
+          await runPhase(proto.phases[p], p, proto.phases.length);
+        }
+      }
+
+      // Final hold
+      if (!isRunning) return;
+      document.getElementById('round-info').textContent = 'Ritenzione finale';
+      buildDots([{ label: 'Trattieni il respiro' }]);
+      activateDot(0);
+      holdSound();
+      setBubble(1.0, '#c9a84c');
+
+      const holdDur = proto.finalHold.duration * 1000;
+      const holdSteps = holdDur / 50;
+      for (let s = 0; s <= holdSteps; s++) {
+        if (!isRunning) return;
+        const p = s / holdSteps;
+        setCircle(p, '#c9a84c');
+        const left = Math.ceil(proto.finalHold.duration * (1 - p));
+        setPhase('Trattieni', left > 0 ? left : '');
+        await delay(50);
+      }
+
+      // Recovery breath
+      if (!isRunning) return;
+      inhaleSound();
+      setPhase('Respiro di recupero', proto.recovery.duration);
+      setBubble(1.2, '#6bcf7f');
+      setCircle(0, '#6bcf7f');
+      await delay(proto.recovery.duration * 1000);
+
+      if (isRunning) finish(proto.name);
+    }
+
+    function stopBreathing() {
+      isRunning = false;
+      clearAllTimers();
+      stopVagalTone();
+      resetBreathing();
+    }
+
+    function resetBreathing() {
+      isRunning = false;
+      clearAllTimers();
+      stopVagalTone();
+
+      document.getElementById('start-btn').style.display = 'block';
+      document.getElementById('stop-btn').style.display = 'none';
+      document.getElementById('completion').classList.remove('show');
+      document.getElementById('science-box').classList.remove('hidden');
+      document.getElementById('science-text').textContent = protocols[selectedProtocol].science;
+      document.getElementById('phase-dots').innerHTML = '';
+      document.getElementById('phase-instruction').textContent = 'Scegli un protocollo e premi Inizia';
+      document.getElementById('round-info').textContent = '';
+      document.getElementById('circle-phase').textContent = 'Pronto';
+      document.getElementById('circle-count').textContent = '—';
+      document.getElementById('circle-bubble').style.transform = 'scale(1)';
+      document.getElementById('circle-bubble').style.background = 'rgba(62,207,207,0.1)';
+      setCircle(0, 'var(--teal)');
+    }
+
+    function finish(name) {
+      isRunning = false;
+      stopVagalTone();
+      completionSound();
+
+      document.getElementById('start-btn').style.display = 'none';
+      document.getElementById('stop-btn').style.display = 'none';
+      document.getElementById('phase-instruction').textContent = 'Sessione completata ✓';
+      document.getElementById('round-info').textContent = '';
+      setCircle(1, '#6bcf7f');
+      setBubble(1.0, '#6bcf7f');
+      setPhase('✓', '');
+
+      const msgs = {
+        sigh: 'Hai abbassato il cortisolo in meno di un minuto. Il nervo vago è attivo, il sistema parasympathetic è on.',
+        box: 'Corteccia prefrontale e amigdala sono ora in equilibrio. Focus e calma sono il tuo stato di default.',
+        '478': 'Il protocollo 4-7-8 ha attivato il nervo vago. La frequenza cardiaca si è abbassata, il corpo è pronto al riposo.',
+        wim: 'Hai completato un round Wim Hof. L\'adrenalina è aumentata, le citochine infiammatorie si sono ridotte. Energia e vitalità al massimo.'
+      };
+
+      document.getElementById('completion-msg').textContent = msgs[selectedProtocol];
+      setTimeout(() => document.getElementById('completion').classList.add('show'), 600);
+    }
+
+    // ===== EMAIL SUBMIT =====
+    function submitEmail() {
+      const email = document.getElementById('email-input').value;
+      if (!email || !email.includes('@')) {
+        alert('Inserisci un\'email valida');
+        return;
+      }
+
+      const MAILERLITE_KEY = 'SOSTITUISCI_CON_TUO_API_KEY';
+      const GROUP_ID = 'SOSTITUISCI_CON_TUO_GROUP_ID';
+
+      fetch('https://api.mailerlite.com/api/v2/subscribers', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-MailerLite-ApiKey': MAILERLITE_KEY
+        },
+        body: JSON.stringify({
+          email: email,
+          resubscribe: true,
+          fields: { source: 'breathing_protocol', protocol_used: selectedProtocol },
+          groups: [GROUP_ID]
+        })
+      }).catch(() => {});
+
+      document.getElementById('email-input').value = '';
+      document.querySelector('.email-form').innerHTML = '<p style="color:var(--green); font-weight:600; text-align:center;">✓ Perfetto! Riceverai i protocolli entro pochi minuti.</p>';
+    }
+  </script>
+</body>
+</html>

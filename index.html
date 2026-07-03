@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Neuroplasticity Training Academy — Brain Longevity Protocol</title>
+  <style>
+    :root {
+      --navy: #0d1b2a;
+      --navy-mid: #1b2d42;
+      --gold: #c9a84c;
+      --gold-light: #f0d080;
+      --teal: #3ecfcf;
+      --rose: #e8748a;
+      --white: #f5f3ee;
+      --grey: #8a9bb0;
+      --radius: 14px;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: var(--navy);
+      color: var(--white);
+      min-height: 100vh;
+    }
+
+    /* NAV */
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 30px;
+      border-bottom: 1px solid rgba(201,168,76,0.2);
+    }
+
+    .logo {
+      font-size: 15px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      color: var(--gold);
+      text-transform: uppercase;
+    }
+
+    .logo span { color: var(--white); }
+
+    nav a {
+      color: var(--grey);
+      text-decoration: none;
+      font-size: 14px;
+      margin-left: 24px;
+      transition: color 0.2s;
+    }
+
+    nav a:hover { color: var(--white); }
+
+    .nav-cta {
+      background: var(--gold);
+      color: var(--navy) !important;
+      padding: 8px 18px;
+      border-radius: 50px;
+      font-weight: 600;
+    }
+
+    /* HERO */
+    .hero {
+      max-width: 680px;
+      margin: 0 auto;
+      padding: 80px 30px 60px;
+      text-align: center;
+    }
+
+    .eyebrow {
+      font-size: 11px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 20px;
+    }
+
+    h1 {
+      font-size: clamp(32px, 6vw, 54px);
+      font-weight: 800;
+      line-height: 1.12;
+      color: var(--white);
+      margin-bottom: 22px;
+    }
+
+    h1 em {
+      font-style: normal;
+      color: var(--gold);
+    }
+
+    .hero-sub {
+      font-size: 17px;
+      color: var(--grey);
+      line-height: 1.65;
+      margin-bottom: 40px;
+    }
+
+    /* PATHS */
+    .paths {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      max-width: 680px;
+      margin: 0 auto;
+      padding: 0 30px;
+    }
+
+    @media (max-width: 560px) {
+      .paths { grid-template-columns: 1fr; }
+    }
+
+    .path-card {
+      background: var(--navy-mid);
+      border: 1px solid rgba(201,168,76,0.25);
+      border-radius: var(--radius);
+      padding: 28px 24px;
+      text-align: left;
+      text-decoration: none;
+      color: var(--white);
+      display: block;
+      transition: all 0.2s;
+      cursor: pointer;
+    }
+
+    .path-card:hover {
+      border-color: var(--gold);
+      transform: translateY(-2px);
+    }
+
+    .path-icon { font-size: 28px; margin-bottom: 14px; display: block; }
+
+    .path-card h3 {
+      font-size: 17px;
+      font-weight: 700;
+      margin-bottom: 8px;
+      color: var(--white);
+    }
+
+    .path-card p {
+      font-size: 13px;
+      color: var(--grey);
+      line-height: 1.55;
+      margin-bottom: 16px;
+    }
+
+    .path-price {
+      font-size: 13px;
+      color: var(--gold);
+      font-weight: 600;
+    }
+
+    .path-btn {
+      display: block;
+      width: 100%;
+      padding: 11px;
+      border-radius: 8px;
+      border: none;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      margin-top: 16px;
+      transition: all 0.2s;
+    }
+
+    .path-btn.primary {
+      background: var(--gold);
+      color: var(--navy);
+    }
+
+    .path-btn.secondary {
+      background: transparent;
+      color: var(--white);
+      border: 1px solid rgba(255,255,255,0.2);
+    }
+
+    .path-btn.primary:hover { background: var(--gold-light); }
+    .path-btn.secondary:hover { border-color: var(--white); }
+
+    /* SCIENCE SECTION */
+    .science {
+      max-width: 760px;
+      margin: 80px auto 0;
+      padding: 0 30px 80px;
+    }
+
+    .section-label {
+      font-size: 11px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 14px;
+    }
+
+    .science h2 {
+      font-size: clamp(22px, 4vw, 32px);
+      font-weight: 700;
+      margin-bottom: 18px;
+    }
+
+    .science p {
+      color: var(--grey);
+      line-height: 1.7;
+      margin-bottom: 14px;
+      font-size: 15px;
+    }
+
+    /* PROTOCOL STACK */
+    .protocols {
+      background: var(--navy-mid);
+      border-radius: var(--radius);
+      border: 1px solid rgba(201,168,76,0.15);
+      padding: 30px;
+      margin-top: 40px;
+    }
+
+    .protocols h3 {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--gold);
+      margin-bottom: 20px;
+      letter-spacing: 0.05em;
+    }
+
+    .protocol-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+      padding: 14px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .protocol-row:last-child { border-bottom: none; }
+
+    .protocol-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      margin-top: 6px;
+      flex-shrink: 0;
+    }
+
+    .dot-gold { background: var(--gold); }
+    .dot-teal { background: var(--teal); }
+    .dot-rose { background: var(--rose); }
+
+    .protocol-row strong {
+      font-size: 14px;
+      font-weight: 600;
+      display: block;
+      margin-bottom: 3px;
+    }
+
+    .protocol-row span {
+      font-size: 12px;
+      color: var(--grey);
+    }
+
+    /* SOCIAL PROOF */
+    .proof {
+      max-width: 760px;
+      margin: 0 auto 80px;
+      padding: 0 30px;
+    }
+
+    .proof-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+
+    @media (max-width: 600px) {
+      .proof-grid { grid-template-columns: 1fr; }
+    }
+
+    .proof-card {
+      background: var(--navy-mid);
+      border-radius: var(--radius);
+      padding: 22px;
+      border: 1px solid rgba(255,255,255,0.07);
+    }
+
+    .proof-number {
+      font-size: 36px;
+      font-weight: 800;
+      color: var(--gold);
+      display: block;
+      margin-bottom: 6px;
+    }
+
+    .proof-label {
+      font-size: 13px;
+      color: var(--grey);
+    }
+
+    /* FAQ STRIP */
+    .faq {
+      max-width: 640px;
+      margin: 0 auto 80px;
+      padding: 0 30px;
+    }
+
+    .faq h2 {
+      font-size: 22px;
+      font-weight: 700;
+      margin-bottom: 24px;
+    }
+
+    .faq-item {
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      padding: 18px 0;
+    }
+
+    .faq-q {
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .faq-a {
+      font-size: 14px;
+      color: var(--grey);
+      line-height: 1.65;
+      margin-top: 10px;
+      display: none;
+    }
+
+    .faq-a.open { display: block; }
+
+    /* FOOTER */
+    footer {
+      text-align: center;
+      padding: 30px;
+      font-size: 12px;
+      color: var(--grey);
+      border-top: 1px solid rgba(255,255,255,0.07);
+    }
+
+    footer a { color: var(--grey); }
+
+    /* MODAL */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.8);
+      z-index: 200;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .modal-overlay.open { display: flex; }
+
+    .modal {
+      background: var(--navy-mid);
+      border-radius: var(--radius);
+      border: 1px solid rgba(201,168,76,0.3);
+      padding: 36px;
+      max-width: 440px;
+      width: 100%;
+      text-align: center;
+    }
+
+    .modal h3 { font-size: 22px; margin-bottom: 12px; }
+    .modal p { color: var(--grey); font-size: 14px; margin-bottom: 24px; }
+
+    .modal-actions { display: flex; flex-direction: column; gap: 10px; }
+
+    .modal-btn {
+      padding: 13px;
+      border-radius: 8px;
+      border: none;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .modal-btn.gold { background: var(--gold); color: var(--navy); }
+    .modal-btn.outline { background: transparent; color: var(--white); border: 1px solid rgba(255,255,255,0.2); }
+    .modal-close { position: absolute; top: 16px; right: 20px; background: none; border: none; color: var(--grey); font-size: 24px; cursor: pointer; }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <div class="logo">Neuroplasticity Training<span> Academy</span></div>
+    <div>
+      <a href="#science">Il Metodo</a>
+      <a href="#proof">Risultati</a>
+      <a href="assessment.html" class="nav-cta">Inizia il Test</a>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <p class="eyebrow">Brain Longevity Protocol · Giulia Segurini, Neuropsicolog</p>
+    <h1>Allena il tuo cervello.<br><em>Misura i risultati.</em></h1>
+    <p class="hero-sub">Il primo sistema italiano di allenamento neurocognitivo basato su coordinazione attiva, protocolli audio scientifici e neuroplasticity integration. Per chi vuole performare meglio, regolare le emozioni, dormire profondamente.</p>
+  </section>
+
+  <!-- TWO PATHS -->
+  <div class="paths">
+
+    <div class="path-card" onclick="window.location.href='assessment.html'">
+      <span class="path-icon">🎓</span>
+      <h3>Academy Digitale</h3>
+      <p>Assessment cognitivo + protocolli audio 40Hz/theta/alpha + active training. Lavori ogni giorno, misuri i progressi.</p>
+      <span class="path-price">Da €39/mese · Cancella quando vuoi</span>
+      <button class="path-btn primary">Fai il Test Gratuito →</button>
+    </div>
+
+    <div class="path-card" onclick="openClinicModal()">
+      <span class="path-icon">🩺</span>
+      <h3>Percorso Clinico 1:1</h3>
+      <p>Trauma, attaccamento, DSA, ansia, bipolarità, disturbi di personalità. Sedute individuali con Giulia, integrate con i protocolli Academy.</p>
+      <span class="path-price">Colloquio conoscitivo · 20 slot/settimana</span>
+      <button class="path-btn secondary">Prenota un Colloquio →</button>
+    </div>
+
+  </div>
+
+  <!-- SCIENCE -->
+  <section class="science" id="science">
+    <p class="section-label">Neuroplasticity · Il Metodo</p>
+    <h2>Perché funziona dove gli altri falliscono</h2>
+    <p>La neuroplasticity massimale non deriva da un singolo stimolo. Deriva dall'integrazione simultanea di sistemi multipli — motorio, uditivo, cognitivo, emotivo — che lavorano insieme in tempo reale.</p>
+    <p>È quello che fa un musicista quando suona: sei sistemi neurali contemporaneamente. Noi rendiamo questo accessibile in 10-15 minuti al giorno, supportato da protocolli audio scientifici passivi che lavorano mentre vivi.</p>
+
+    <div class="protocols">
+      <h3>STACK DEL PROTOCOLLO COMPLETO</h3>
+
+      <div class="protocol-row">
+        <div class="protocol-dot dot-gold"></div>
+        <div>
+          <strong>Assessment Neurocognitivo (6 misurazioni)</strong>
+          <span>Memoria, attenzione, inibizione, reaction time, processing uditivo, flessibilità cognitiva. Percentile normativi. Baseline misurabile.</span>
+        </div>
+      </div>
+
+      <div class="protocol-row">
+        <div class="protocol-dot dot-teal"></div>
+        <div>
+          <strong>Protocolli Audio Passivi (40Hz · Theta · Alpha · Binaural)</strong>
+          <span>Attivazione vagale, consolidamento memoria, focus rilassato, sincronizzazione cerebrale. Ascolti mentre lavori, dormi, ti muovi.</span>
+        </div>
+      </div>
+
+      <div class="protocol-row">
+        <div class="protocol-dot dot-rose"></div>
+        <div>
+          <strong>Active Coordination Training (10-15 min/giorno)</strong>
+          <span>Coordinazione bimanuale, ritmo, pitch, music-emotion integration. Multi-system neuroplasticity come nei musicisti.</span>
+        </div>
+      </div>
+
+      <div class="protocol-row">
+        <div class="protocol-dot dot-gold"></div>
+        <div>
+          <strong>Cognitive Games (gamificati)</strong>
+          <span>Stroop, Go/No-Go, memoria, attenzione. Sembrano giochi. Allenano il cervello per davvero.</span>
+        </div>
+      </div>
+
+      <div class="protocol-row">
+        <div class="protocol-dot dot-teal"></div>
+        <div>
+          <strong>Tracking Automatico Pre/Post</strong>
+          <span>Vedi i miglioramenti reali dopo 30 giorni. Non sensazioni, dati.</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROOF -->
+  <section class="proof" id="proof">
+    <p class="section-label">Risultati</p>
+    <div class="proof-grid">
+      <div class="proof-card">
+        <span class="proof-number">6</span>
+        <span class="proof-label">Misurazioni neurocognitive nell'assessment</span>
+      </div>
+      <div class="proof-card">
+        <span class="proof-number">30</span>
+        <span class="proof-label">Giorni per risultati misurabili</span>
+      </div>
+      <div class="proof-card">
+        <span class="proof-number">15'</span>
+        <span class="proof-label">Di active training al giorno</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="faq">
+    <h2>Domande frequenti</h2>
+
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        Non è come gli altri brain training? <span>+</span>
+      </div>
+      <div class="faq-a">Gli altri training allenano un singolo sistema neurale (es. memoria). Noi integriamo motorio, uditivo, cognitivo ed emotivo insieme — come fa un musicista. Questo produce neuroplasticity reale, non miglioramenti specifici al gioco.</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        Serve comprare hardware speciale? <span>+</span>
+      </div>
+      <div class="faq-a">No. Tutto funziona con mouse, tastiera e cuffie. Quello che hai già. Se in futuro vorrai più precisione (Leap Motion, EEG lite) te lo diremo — ma non è richiesto per ottenere risultati.</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        Quanto tempo ci vuole ogni giorno? <span>+</span>
+      </div>
+      <div class="faq-a">Active training: 10-15 minuti. Protocolli audio passivi: li ascolti mentre lavori, cammini, ti prepari. Il cervello si allena anche mentre vivi.</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        Posso usarlo se sto già facendo terapia? <span>+</span>
+      </div>
+      <div class="faq-a">Sì, e spesso è complementare. Giulia usa i protocolli Academy come homework tra le sedute cliniche — i dati di tracking portano informazioni utili in seduta.</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        Qual è la differenza tra Academy e percorso clinico? <span>+</span>
+      </div>
+      <div class="faq-a">L'Academy è un sistema digitale scalabile per il potenziamento cognitivo. Il percorso clinico è un intervento terapeutico individuale con Giulia per condizioni come trauma, DSA, disturbi d'ansia, bipolarità, disturbi di personalità. Spesso si integrano.</div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <p>neuroplasticitytraining.it · @neuroplasticity_training · @dott.giuliasegurini</p>
+    <p style="margin-top: 8px;"><a href="#">Privacy</a> · <a href="#">Contatti</a></p>
+  </footer>
+
+  <!-- CLINIC MODAL -->
+  <div class="modal-overlay" id="clinicModal">
+    <div class="modal" style="position:relative;">
+      <button class="modal-close" onclick="closeClinicModal()">×</button>
+      <h3>🩺 Percorso Clinico</h3>
+      <p>Il colloquio conoscitivo dura 50 minuti. Valutiamo insieme il percorso più adatto — trauma, DSA, ansia, bipolarità, disturbi di personalità, coaching neuropsicologico.</p>
+      <div class="modal-actions">
+        <button class="modal-btn gold" onclick="window.open('https://calendly.com/[TUO-LINK]', '_blank')">Prenota Colloquio Conoscitivo →</button>
+        <button class="modal-btn outline" onclick="closeClinicModal()">Torna indietro</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function toggleFaq(el) {
+      const answer = el.nextElementSibling;
+      const icon = el.querySelector('span');
+      answer.classList.toggle('open');
+      icon.textContent = answer.classList.contains('open') ? '−' : '+';
+    }
+
+    function openClinicModal() {
+      document.getElementById('clinicModal').classList.add('open');
+    }
+
+    function closeClinicModal() {
+      document.getElementById('clinicModal').classList.remove('open');
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,954 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Assessment Neurocognitivo — Neuroplasticity Training Academy</title>
+  <style>
+    :root {
+      --navy: #0d1b2a;
+      --navy-mid: #1b2d42;
+      --navy-light: #243850;
+      --gold: #c9a84c;
+      --teal: #3ecfcf;
+      --rose: #e8748a;
+      --green: #6bcf7f;
+      --red: #e86060;
+      --white: #f5f3ee;
+      --grey: #8a9bb0;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: var(--navy);
+      color: var(--white);
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    .wrap {
+      max-width: 520px;
+      margin: 0 auto;
+    }
+
+    /* PROGRESS */
+    .progress-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 8px;
+      font-size: 12px;
+      color: var(--grey);
+    }
+
+    .progress-bar {
+      width: 100%;
+      height: 3px;
+      background: var(--navy-light);
+      border-radius: 3px;
+      margin-bottom: 32px;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: var(--gold);
+      border-radius: 3px;
+      transition: width 0.4s ease;
+      width: 0%;
+    }
+
+    /* CARD */
+    .card {
+      background: var(--navy-mid);
+      border-radius: 16px;
+      padding: 32px 28px;
+      border: 1px solid rgba(201,168,76,0.15);
+    }
+
+    .test-tag {
+      font-size: 10px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 10px;
+    }
+
+    h2 {
+      font-size: 22px;
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+
+    .instruction {
+      font-size: 14px;
+      color: var(--grey);
+      line-height: 1.6;
+      margin-bottom: 24px;
+    }
+
+    /* STIMULUS */
+    .stimulus-box {
+      background: var(--navy-light);
+      border-radius: 12px;
+      min-height: 110px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 44px;
+      font-weight: 800;
+      margin-bottom: 20px;
+      transition: background 0.2s, transform 0.1s;
+      letter-spacing: 0.12em;
+      text-align: center;
+      padding: 16px;
+    }
+
+    .stimulus-box.correct {
+      background: rgba(107,207,127,0.2);
+      border: 1px solid var(--green);
+    }
+
+    .stimulus-box.incorrect {
+      background: rgba(232,96,96,0.2);
+      border: 1px solid var(--red);
+    }
+
+    .stimulus-box.pulse {
+      animation: pulse 0.4s ease;
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.04); }
+      100% { transform: scale(1); }
+    }
+
+    /* TIMER */
+    .countdown {
+      text-align: center;
+      font-size: 28px;
+      font-weight: 700;
+      color: var(--gold);
+      margin-bottom: 16px;
+      min-height: 40px;
+    }
+
+    /* DIFFICULTY */
+    .diff-tag {
+      text-align: center;
+      font-size: 11px;
+      color: var(--grey);
+      margin-bottom: 16px;
+      letter-spacing: 0.08em;
+    }
+
+    /* INPUT */
+    input[type="text"] {
+      width: 100%;
+      padding: 14px 16px;
+      background: var(--navy-light);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 10px;
+      color: var(--white);
+      font-size: 18px;
+      outline: none;
+      margin-bottom: 14px;
+      text-align: center;
+      letter-spacing: 0.1em;
+    }
+
+    input[type="text"]:focus { border-color: var(--gold); }
+
+    /* BUTTONS */
+    .btn-primary {
+      width: 100%;
+      padding: 15px;
+      background: var(--gold);
+      color: var(--navy);
+      border: none;
+      border-radius: 10px;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.15s;
+      margin-bottom: 10px;
+    }
+
+    .btn-primary:hover { background: #e0bc60; }
+    .btn-primary:active { transform: scale(0.98); }
+
+    .btn-ghost {
+      width: 100%;
+      padding: 12px;
+      background: transparent;
+      color: var(--grey);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 10px;
+      font-size: 14px;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .btn-ghost:hover { border-color: var(--grey); color: var(--white); }
+
+    .btn-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    .btn-color {
+      padding: 14px;
+      border: 2px solid transparent;
+      border-radius: 10px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.1s;
+    }
+
+    .btn-color:active { transform: scale(0.96); }
+    .btn-color.red { background: rgba(232,96,96,0.15); color: #e86060; border-color: rgba(232,96,96,0.3); }
+    .btn-color.blue { background: rgba(62,207,207,0.1); color: #3ecfcf; border-color: rgba(62,207,207,0.3); }
+    .btn-color.green { background: rgba(107,207,127,0.1); color: #6bcf7f; border-color: rgba(107,207,127,0.3); }
+    .btn-color.yellow { background: rgba(240,208,128,0.1); color: #f0d080; border-color: rgba(240,208,128,0.3); }
+
+    .big-tap {
+      width: 100%;
+      padding: 50px 20px;
+      background: var(--navy-light);
+      border: 2px solid rgba(255,255,255,0.1);
+      border-radius: 14px;
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--white);
+      cursor: pointer;
+      transition: all 0.1s;
+      margin-bottom: 10px;
+    }
+
+    .big-tap:active { background: rgba(201,168,76,0.2); border-color: var(--gold); transform: scale(0.98); }
+
+    /* STATS */
+    .stats-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-top: 20px;
+    }
+
+    .stat-box {
+      background: var(--navy-light);
+      border-radius: 10px;
+      padding: 12px;
+      text-align: center;
+    }
+
+    .stat-val {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--gold);
+    }
+
+    .stat-lbl { font-size: 10px; color: var(--grey); margin-top: 2px; }
+
+    /* RESULTS */
+    .results-card {
+      background: var(--navy-mid);
+      border-radius: 16px;
+      padding: 28px;
+      border: 1px solid rgba(201,168,76,0.2);
+    }
+
+    .result-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .result-row:last-child { border-bottom: none; }
+
+    .result-left { flex: 1; }
+    .result-label { font-size: 12px; color: var(--grey); margin-bottom: 3px; }
+    .result-name { font-size: 15px; font-weight: 600; }
+    .result-right { text-align: right; }
+    .result-perc { font-size: 20px; font-weight: 800; color: var(--gold); }
+    .result-badge {
+      font-size: 10px;
+      padding: 3px 8px;
+      border-radius: 50px;
+      font-weight: 600;
+      margin-top: 3px;
+      display: inline-block;
+    }
+
+    .badge-strong { background: rgba(107,207,127,0.2); color: var(--green); }
+    .badge-average { background: rgba(240,208,128,0.15); color: #f0d080; }
+    .badge-train { background: rgba(232,116,138,0.2); color: var(--rose); }
+
+    /* INTRO */
+    .intro-card {
+      text-align: center;
+    }
+
+    .intro-card .big-icon { font-size: 56px; margin-bottom: 20px; display: block; }
+    .intro-card h2 { font-size: 26px; margin-bottom: 12px; }
+    .intro-card p { color: var(--grey); margin-bottom: 30px; line-height: 1.65; font-size: 15px; }
+
+    .test-list {
+      text-align: left;
+      background: var(--navy-light);
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 28px;
+    }
+
+    .test-list-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 0;
+      font-size: 14px;
+      color: var(--grey);
+    }
+
+    .test-list-item span { color: var(--white); }
+
+    .hidden { display: none !important; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <!-- PROGRESS -->
+    <div id="progressHeader" class="progress-header hidden">
+      <span id="testLabel">Test 1 di 6</span>
+      <span id="testName">Memoria di Lavoro</span>
+    </div>
+    <div class="progress-bar" id="progressBar" style="display:none;">
+      <div class="progress-fill" id="progressFill"></div>
+    </div>
+
+    <!-- INTRO -->
+    <div id="intro" class="card intro-card">
+      <span class="big-icon">🧠</span>
+      <h2>Baseline Neurocognitivo</h2>
+      <p>6 misurazioni scientifiche. 15-20 minuti. Scopri il tuo profilo neurofunzionale reale e il protocollo di training personalizzato.</p>
+      <div class="test-list">
+        <div class="test-list-item">🧠 <span>Memoria di Lavoro</span> — working memory adattiva</div>
+        <div class="test-list-item">👁️ <span>Attenzione Sostenuta</span> — CPT 60 secondi</div>
+        <div class="test-list-item">🎨 <span>Inibizione Cognitiva</span> — Stroop test</div>
+        <div class="test-list-item">⚡ <span>Impulse Control</span> — Go/No-Go</div>
+        <div class="test-list-item">🎯 <span>Reaction Time</span> — velocità sistema nervoso</div>
+        <div class="test-list-item">🔊 <span>Auditory Processing</span> — elaborazione uditiva</div>
+      </div>
+      <button class="btn-primary" onclick="startAssessment()">Inizia il Baseline →</button>
+      <button class="btn-ghost" onclick="window.location.href='index.html'" style="margin-top:10px;">← Torna alla home</button>
+    </div>
+
+    <!-- TEST 1: MEMORIA DI LAVORO -->
+    <div id="test1" class="card hidden">
+      <div class="test-tag">Test 1 · 6 — Memoria di Lavoro</div>
+      <h2>Ricorda la sequenza</h2>
+      <p class="instruction">Memorizza i numeri, poi inseriscili nello stesso ordine. La difficoltà aumenta se vai bene.</p>
+      <div class="diff-tag" id="mem-diff">Livello 1 · 5 numeri</div>
+      <div class="stimulus-box" id="mem-seq">Preparati...</div>
+      <div class="countdown" id="mem-timer"></div>
+      <input type="text" id="mem-input" placeholder="3 7 2 9 5" style="display:none;">
+      <button class="btn-primary" id="mem-confirm" onclick="checkMemory()" style="display:none;">Conferma →</button>
+      <button class="btn-ghost" id="mem-skip" onclick="finishTest(1, 40)" style="display:none;">Salta questo test</button>
+      <div class="stats-row">
+        <div class="stat-box"><div class="stat-val" id="mem-correct">0</div><div class="stat-lbl">Corrette</div></div>
+        <div class="stat-box"><div class="stat-val" id="mem-level">1</div><div class="stat-lbl">Livello</div></div>
+        <div class="stat-box"><div class="stat-val" id="mem-tries">5</div><div class="stat-lbl">Rimanenti</div></div>
+      </div>
+    </div>
+
+    <!-- TEST 2: ATTENZIONE SOSTENUTA -->
+    <div id="test2" class="card hidden">
+      <div class="test-tag">Test 2 · 6 — Attenzione Sostenuta</div>
+      <h2>Premi solo per X</h2>
+      <p class="instruction">Appariranno lettere ogni secondo. Premi il bottone SOLO quando vedi la lettera <strong>X</strong>. Non premere per le altre lettere.</p>
+      <div class="stimulus-box" id="att-stim" style="font-size:72px;">—</div>
+      <button class="big-tap" id="att-btn" onclick="attClick()">Premi per X</button>
+      <button class="btn-ghost" onclick="finishTest(2, 40)">Salta</button>
+      <div class="stats-row">
+        <div class="stat-box"><div class="stat-val" id="att-correct">0</div><div class="stat-lbl">Corretti</div></div>
+        <div class="stat-box"><div class="stat-val" id="att-false">0</div><div class="stat-lbl">Falsi alarm</div></div>
+        <div class="stat-box"><div class="stat-val" id="att-time">60</div><div class="stat-lbl">Secondi</div></div>
+      </div>
+    </div>
+
+    <!-- TEST 3: STROOP -->
+    <div id="test3" class="card hidden">
+      <div class="test-tag">Test 3 · 6 — Inibizione Cognitiva (Stroop)</div>
+      <h2>Il colore, non la parola</h2>
+      <p class="instruction">Clicca il colore IN CUI è scritta la parola. Ignora quello che leggi.</p>
+      <div class="diff-tag" id="stroop-diff">Trial 1 · 10</div>
+      <div class="stimulus-box" id="stroop-word" style="font-size:52px;">ROSSO</div>
+      <div class="btn-grid">
+        <button class="btn-color red" onclick="checkStroop('rosso')">🔴 Rosso</button>
+        <button class="btn-color blue" onclick="checkStroop('blu')">🔵 Blu</button>
+        <button class="btn-color green" onclick="checkStroop('verde')">🟢 Verde</button>
+        <button class="btn-color yellow" onclick="checkStroop('giallo')">🟡 Giallo</button>
+      </div>
+      <button class="btn-ghost" onclick="finishTest(3, 40)">Salta</button>
+      <div class="stats-row">
+        <div class="stat-box"><div class="stat-val" id="stroop-correct">0</div><div class="stat-lbl">Corretti</div></div>
+        <div class="stat-box"><div class="stat-val" id="stroop-rt">—</div><div class="stat-lbl">RT medio ms</div></div>
+        <div class="stat-box"><div class="stat-val" id="stroop-trial">1/10</div><div class="stat-lbl">Trial</div></div>
+      </div>
+    </div>
+
+    <!-- TEST 4: GO/NO-GO -->
+    <div id="test4" class="card hidden">
+      <div class="test-tag">Test 4 · 6 — Impulse Control (Go/No-Go)</div>
+      <h2>GO oppure no?</h2>
+      <p class="instruction">🟢 = premi SUBITO. 🔴 = NON premere. Controlla l'impulso.</p>
+      <div class="stimulus-box" id="go-stim" style="font-size:72px;">Pronto?</div>
+      <button class="big-tap" id="go-btn" onclick="goClick()">Premi se 🟢</button>
+      <button class="btn-ghost" onclick="finishTest(4, 40)">Salta</button>
+      <div class="stats-row">
+        <div class="stat-box"><div class="stat-val" id="go-correct">0</div><div class="stat-lbl">Corretti</div></div>
+        <div class="stat-box"><div class="stat-val" id="go-false">0</div><div class="stat-lbl">Falsi alarm</div></div>
+        <div class="stat-box"><div class="stat-val" id="go-miss">0</div><div class="stat-lbl">Mancati</div></div>
+      </div>
+    </div>
+
+    <!-- TEST 5: REACTION TIME -->
+    <div id="test5" class="card hidden">
+      <div class="test-tag">Test 5 · 6 — Reaction Time</div>
+      <h2>Premi appena vedi verde</h2>
+      <p class="instruction">Lo schermo diventerà verde in modo casuale. Premi il più velocemente possibile. 5 trial.</p>
+      <div class="stimulus-box" id="rt-box" style="font-size:40px; transition: background 0.05s;">Aspetta...</div>
+      <button class="big-tap" id="rt-btn" onclick="rtClick()">TAP!</button>
+      <button class="btn-ghost" onclick="finishTest(5, 40)">Salta</button>
+      <div class="stats-row">
+        <div class="stat-box"><div class="stat-val" id="rt-avg">—</div><div class="stat-lbl">Media ms</div></div>
+        <div class="stat-box"><div class="stat-val" id="rt-best">—</div><div class="stat-lbl">Migliore ms</div></div>
+        <div class="stat-box"><div class="stat-val" id="rt-count">0/5</div><div class="stat-lbl">Trial</div></div>
+      </div>
+    </div>
+
+    <!-- TEST 6: AUDITORY -->
+    <div id="test6" class="card hidden">
+      <div class="test-tag">Test 6 · 6 — Auditory Processing</div>
+      <h2>Doppio o singolo?</h2>
+      <p class="instruction">Sentirai dei beep. Premi il bottone SOLO quando senti un beep DOPPIO. Ignora i beep singoli.</p>
+      <div class="stimulus-box" id="audio-stim" style="font-size:52px;">🔊</div>
+      <button class="big-tap" id="audio-btn" onclick="audioClick()">Ho sentito il DOPPIO!</button>
+      <button class="btn-ghost" onclick="finishTest(6, 40)">Salta</button>
+      <div class="stats-row">
+        <div class="stat-box"><div class="stat-val" id="audio-correct">0</div><div class="stat-lbl">Corretti</div></div>
+        <div class="stat-box"><div class="stat-val" id="audio-false">0</div><div class="stat-lbl">Falsi alarm</div></div>
+        <div class="stat-box"><div class="stat-val" id="audio-trial">0/8</div><div class="stat-lbl">Trial</div></div>
+      </div>
+    </div>
+
+    <!-- EMAIL CAPTURE -->
+    <div id="email-capture" class="card hidden">
+      <div class="test-tag">Quasi fatto!</div>
+      <h2>Dove ti mando i risultati?</h2>
+      <p class="instruction">Il tuo profilo neurocognitivo completo + il protocollo personalizzato arriveranno via email.</p>
+      <input type="text" id="user-name" placeholder="Il tuo nome" style="margin-bottom:12px;">
+      <input type="email" id="user-email" placeholder="nome@email.com">
+      <button class="btn-primary" onclick="submitAndShowResults()">Mostra i miei risultati →</button>
+      <button class="btn-ghost" onclick="showResults()" style="margin-top:8px;">Salta, vedi solo i risultati</button>
+    </div>
+
+    <!-- RESULTS -->
+    <div id="results" class="hidden">
+      <div style="text-align:center; margin-bottom:28px;">
+        <div style="font-size:11px; letter-spacing:0.15em; text-transform:uppercase; color:var(--gold); margin-bottom:10px;">Il Tuo Profilo Neurofunzionale</div>
+        <h2 style="font-size:26px;">Baseline Completato</h2>
+        <p style="color:var(--grey); font-size:14px; margin-top:8px;">Basato su 6 misurazioni neuroscientifiche</p>
+      </div>
+
+      <div class="results-card" id="results-display">
+        <!-- Generated by JS -->
+      </div>
+
+      <div style="background:var(--navy-mid); border-radius:14px; padding:24px; margin-top:20px; border:1px solid rgba(62,207,207,0.2);">
+        <div style="font-size:11px; color:var(--teal); letter-spacing:0.1em; text-transform:uppercase; margin-bottom:12px;">Prossimo Passo</div>
+        <p id="protocol-recommendation" style="font-size:15px; line-height:1.6; color:var(--grey); margin-bottom:20px;"></p>
+        <button class="btn-primary" onclick="window.location.href='memory-game.html'">🎮 Prova il Mini-Training Gratis →</button>
+        <button class="btn-ghost" style="margin-top:10px;" onclick="window.open('https://buy.stripe.com/[TUO-LINK-ASSESSMENT]','_blank')">Accedi all'Academy Completa (€79) →</button>
+      </div>
+    </div>
+
+  </div><!-- /wrap -->
+
+  <script>
+    // ===== STATE =====
+    const scores = {};
+    let currentTest = 0;
+
+    // ===== AUDIO ENGINE =====
+    const ac = new (window.AudioContext || window.webkitAudioContext)();
+
+    function beep(freq = 440, type = 'sine', vol = 0.3, dur = 0.15) {
+      const osc = ac.createOscillator();
+      const g = ac.createGain();
+      osc.type = type;
+      osc.frequency.value = freq;
+      g.gain.setValueAtTime(vol, ac.currentTime);
+      g.gain.exponentialRampToValueAtTime(0.001, ac.currentTime + dur);
+      osc.connect(g); g.connect(ac.destination);
+      osc.start(); osc.stop(ac.currentTime + dur);
+    }
+
+    function successSound() {
+      [523, 659, 784].forEach((f, i) => setTimeout(() => beep(f, 'sine', 0.2, 0.15), i * 80));
+    }
+
+    function errorSound() { beep(200, 'sawtooth', 0.2, 0.2); }
+
+    // ===== PROGRESS =====
+    function setProgress(step) {
+      document.getElementById('progressFill').style.width = (step / 7 * 100) + '%';
+      document.getElementById('testLabel').textContent = step <= 6 ? `Test ${step} di 6` : 'Completato';
+    }
+
+    function showSection(id) {
+      ['intro','test1','test2','test3','test4','test5','test6','email-capture','results']
+        .forEach(s => document.getElementById(s).classList.add('hidden'));
+      document.getElementById(id).classList.remove('hidden');
+    }
+
+    function startAssessment() {
+      document.getElementById('progressBar').style.display = 'block';
+      document.getElementById('progressHeader').classList.remove('hidden');
+      showSection('test1');
+      setProgress(1);
+      startMemory();
+    }
+
+    function finishTest(testNum, fallbackScore) {
+      if (scores['t' + testNum] === undefined) scores['t' + testNum] = fallbackScore;
+      const next = testNum + 1;
+      if (next <= 6) {
+        showSection('test' + next);
+        setProgress(next);
+        if (next === 2) startAttention();
+        if (next === 3) startStroop();
+        if (next === 4) startGoNoGo();
+        if (next === 5) startRT();
+        if (next === 6) startAudio();
+      } else {
+        showSection('email-capture');
+        setProgress(7);
+      }
+    }
+
+    // ===== TEST 1: MEMORY =====
+    let memSeq = [], memLevel = 1, memCorrect = 0, memTries = 5, memWaiting = false;
+
+    function startMemory() {
+      if (memTries <= 0 || memLevel > 5) { finishTest(1, calcMemScore()); return; }
+      memWaiting = true;
+      const len = [5,6,7,8,9][memLevel - 1];
+      memSeq = Array.from({length: len}, () => Math.floor(Math.random() * 10));
+      document.getElementById('mem-diff').textContent = `Livello ${memLevel} · ${len} numeri`;
+      document.getElementById('mem-seq').textContent = memSeq.join(' ');
+      document.getElementById('mem-seq').className = 'stimulus-box';
+      document.getElementById('mem-input').style.display = 'none';
+      document.getElementById('mem-confirm').style.display = 'none';
+      document.getElementById('mem-skip').style.display = 'none';
+      document.getElementById('mem-timer').textContent = '3';
+      let cd = 3;
+      const t = setInterval(() => {
+        cd--;
+        document.getElementById('mem-timer').textContent = cd || '';
+        if (cd <= 0) {
+          clearInterval(t);
+          document.getElementById('mem-seq').textContent = '• • • • •';
+          document.getElementById('mem-input').style.display = 'block';
+          document.getElementById('mem-input').value = '';
+          document.getElementById('mem-input').focus();
+          document.getElementById('mem-confirm').style.display = 'block';
+          document.getElementById('mem-skip').style.display = 'block';
+          memWaiting = false;
+        }
+      }, 1000);
+    }
+
+    function checkMemory() {
+      const val = document.getElementById('mem-input').value.trim();
+      const correct = memSeq.join(' ');
+      if (val === correct) {
+        memCorrect++;
+        memLevel = Math.min(5, memLevel + 1);
+        document.getElementById('mem-seq').className = 'stimulus-box correct';
+        document.getElementById('mem-seq').textContent = '✓';
+        successSound();
+      } else {
+        memTries--;
+        if (memLevel > 1) memLevel--;
+        document.getElementById('mem-seq').className = 'stimulus-box incorrect';
+        document.getElementById('mem-seq').textContent = correct;
+        errorSound();
+      }
+      document.getElementById('mem-correct').textContent = memCorrect;
+      document.getElementById('mem-level').textContent = memLevel;
+      document.getElementById('mem-tries').textContent = memTries;
+      scores['t1'] = calcMemScore();
+      setTimeout(startMemory, 900);
+    }
+
+    function calcMemScore() {
+      return Math.min(99, Math.round((memCorrect / 5) * 70 + (memLevel - 1) * 6));
+    }
+
+    // ===== TEST 2: ATTENTION =====
+    let attCorrect = 0, attFalse = 0, attTarget = false, attClicked = false, attInterval = null, attTimer = null, attTimeLeft = 60;
+
+    function startAttention() {
+      attCorrect = 0; attFalse = 0; attTimeLeft = 60; attClicked = false;
+      const letters = ['A','B','C','D','E','F','G','H','X'];
+      const targetRate = 0.25;
+
+      attInterval = setInterval(() => {
+        attClicked = false;
+        attTarget = Math.random() < targetRate;
+        const stim = attTarget ? 'X' : letters[Math.floor(Math.random() * 8)];
+        document.getElementById('att-stim').textContent = stim;
+        document.getElementById('att-stim').className = 'stimulus-box';
+      }, 1000);
+
+      attTimer = setInterval(() => {
+        attTimeLeft--;
+        document.getElementById('att-time').textContent = attTimeLeft;
+        if (attTimeLeft <= 0) {
+          clearInterval(attInterval);
+          clearInterval(attTimer);
+          const total = 60 * targetRate;
+          scores['t2'] = Math.max(0, Math.round((attCorrect / total) * 90 - attFalse * 5));
+          setTimeout(() => finishTest(2, scores['t2']), 500);
+        }
+      }, 1000);
+    }
+
+    function attClick() {
+      if (attClicked) return;
+      attClicked = true;
+      if (attTarget) {
+        attCorrect++;
+        document.getElementById('att-stim').className = 'stimulus-box correct pulse';
+        beep(660, 'sine', 0.2, 0.1);
+      } else {
+        attFalse++;
+        document.getElementById('att-stim').className = 'stimulus-box incorrect pulse';
+        errorSound();
+      }
+      document.getElementById('att-correct').textContent = attCorrect;
+      document.getElementById('att-false').textContent = attFalse;
+    }
+
+    // ===== TEST 3: STROOP =====
+    const stroopData = [
+      {word:'ROSSO',color:'blue',name:'blu'},{word:'BLU',color:'red',name:'rosso'},
+      {word:'VERDE',color:'yellow',name:'giallo'},{word:'GIALLO',color:'green',name:'verde'},
+      {word:'ROSSO',color:'green',name:'verde'},{word:'BLU',color:'yellow',name:'giallo'},
+      {word:'VERDE',color:'red',name:'rosso'},{word:'GIALLO',color:'blue',name:'blu'},
+      {word:'ROSSO',color:'blue',name:'blu'},{word:'BLU',color:'red',name:'rosso'}
+    ];
+    let stroopIdx = 0, stroopCorrect = 0, stroopRTs = [], stroopStart = 0;
+
+    function startStroop() {
+      stroopIdx = 0; stroopCorrect = 0; stroopRTs = [];
+      showStroop();
+    }
+
+    function showStroop() {
+      const t = stroopData[stroopIdx];
+      const el = document.getElementById('stroop-word');
+      el.textContent = t.word;
+      const colorMap = { red:'#e86060', blue:'#3ecfcf', green:'#6bcf7f', yellow:'#f0d080' };
+      el.style.color = colorMap[t.color];
+      el.className = 'stimulus-box';
+      stroopStart = Date.now();
+      document.getElementById('stroop-trial').textContent = `${stroopIdx + 1}/10`;
+    }
+
+    function checkStroop(answer) {
+      const rt = Date.now() - stroopStart;
+      stroopRTs.push(rt);
+      const correct = stroopData[stroopIdx].name === answer;
+      if (correct) {
+        stroopCorrect++;
+        document.getElementById('stroop-word').className = 'stimulus-box correct';
+        beep(660, 'sine', 0.15, 0.1);
+      } else {
+        document.getElementById('stroop-word').className = 'stimulus-box incorrect';
+        errorSound();
+      }
+      document.getElementById('stroop-correct').textContent = stroopCorrect;
+      const avgRt = Math.round(stroopRTs.reduce((a, b) => a + b, 0) / stroopRTs.length);
+      document.getElementById('stroop-rt').textContent = avgRt;
+      stroopIdx++;
+      if (stroopIdx < stroopData.length) {
+        setTimeout(showStroop, 350);
+      } else {
+        scores['t3'] = Math.round((stroopCorrect / 10) * 90 - Math.max(0, (avgRt - 600) / 20));
+        setTimeout(() => finishTest(3, scores['t3']), 500);
+      }
+    }
+
+    // ===== TEST 4: GO/NO-GO =====
+    const goSeq = Array.from({length:16}, () => Math.random() < 0.65);
+    let goIdx = 0, goCorrect = 0, goFalse = 0, goMiss = 0, goClicked = false, goActive = false;
+
+    function startGoNoGo() {
+      goIdx = 0; goCorrect = 0; goFalse = 0; goMiss = 0; goClicked = false;
+      setTimeout(nextGoTrial, 800);
+    }
+
+    function nextGoTrial() {
+      if (goIdx >= goSeq.length) {
+        scores['t4'] = Math.max(0, Math.round((goCorrect / goSeq.filter(x => x).length) * 90 - goFalse * 8));
+        finishTest(4, scores['t4']);
+        return;
+      }
+      goClicked = false;
+      const isGo = goSeq[goIdx];
+      goActive = isGo;
+      document.getElementById('go-stim').textContent = isGo ? '🟢' : '🔴';
+      document.getElementById('go-stim').className = 'stimulus-box' + (isGo ? '' : '');
+      const delay = 1200 + Math.random() * 600;
+      setTimeout(() => {
+        if (!goClicked && isGo) {
+          goMiss++;
+          document.getElementById('go-miss').textContent = goMiss;
+        }
+        document.getElementById('go-stim').textContent = '·';
+        goIdx++;
+        setTimeout(nextGoTrial, 400);
+      }, delay);
+    }
+
+    function goClick() {
+      if (goClicked) return;
+      goClicked = true;
+      if (goActive) {
+        goCorrect++;
+        document.getElementById('go-stim').className = 'stimulus-box correct pulse';
+        beep(660, 'sine', 0.2, 0.1);
+      } else {
+        goFalse++;
+        document.getElementById('go-stim').className = 'stimulus-box incorrect pulse';
+        errorSound();
+      }
+      document.getElementById('go-correct').textContent = goCorrect;
+      document.getElementById('go-false').textContent = goFalse;
+    }
+
+    // ===== TEST 5: REACTION TIME =====
+    let rtTrials = [], rtCount = 0, rtWaiting = false, rtStartTime = 0, rtTimeout = null;
+
+    function startRT() {
+      rtTrials = []; rtCount = 0; rtWaiting = false;
+      setTimeout(nextRT, 1000);
+    }
+
+    function nextRT() {
+      if (rtCount >= 5) {
+        const avg = Math.round(rtTrials.reduce((a, b) => a + b, 0) / rtTrials.length);
+        const best = Math.min(...rtTrials);
+        scores['t5'] = Math.max(10, Math.min(99, Math.round(110 - avg / 4)));
+        document.getElementById('rt-avg').textContent = avg;
+        document.getElementById('rt-best').textContent = best;
+        setTimeout(() => finishTest(5, scores['t5']), 600);
+        return;
+      }
+      rtWaiting = false;
+      document.getElementById('rt-box').textContent = 'Aspetta...';
+      document.getElementById('rt-box').style.background = '';
+      const delay = 1500 + Math.random() * 2500;
+      rtTimeout = setTimeout(() => {
+        rtWaiting = true;
+        rtStartTime = Date.now();
+        document.getElementById('rt-box').textContent = 'ORA!';
+        document.getElementById('rt-box').style.background = 'rgba(107,207,127,0.3)';
+        beep(880, 'sine', 0.3, 0.08);
+        setTimeout(() => {
+          if (rtWaiting) { rtWaiting = false; rtCount++; nextRT(); }
+        }, 2000);
+      }, delay);
+    }
+
+    function rtClick() {
+      if (!rtWaiting) { errorSound(); return; }
+      const rt = Date.now() - rtStartTime;
+      rtWaiting = false;
+      rtTrials.push(rt);
+      rtCount++;
+      document.getElementById('rt-box').textContent = rt + 'ms';
+      document.getElementById('rt-box').style.background = '';
+      document.getElementById('rt-count').textContent = rtCount + '/5';
+      const avg = Math.round(rtTrials.reduce((a, b) => a + b, 0) / rtTrials.length);
+      document.getElementById('rt-avg').textContent = avg;
+      if (rt < (document.getElementById('rt-best').textContent || 9999)) {
+        document.getElementById('rt-best').textContent = rt;
+      }
+      beep(660, 'sine', 0.2, 0.1);
+      setTimeout(nextRT, 800);
+    }
+
+    // ===== TEST 6: AUDITORY PROCESSING =====
+    const audioSeq = Array.from({length:8}, () => Math.random() < 0.5); // true=doppio
+    let audioIdx = 0, audioCorrect = 0, audioFalse = 0, audioActive = false, audioClicked = false;
+
+    function startAudio() {
+      audioIdx = 0; audioCorrect = 0; audioFalse = 0;
+      setTimeout(nextAudio, 1000);
+    }
+
+    function nextAudio() {
+      if (audioIdx >= audioSeq.length) {
+        scores['t6'] = Math.max(0, Math.round((audioCorrect / audioSeq.filter(x => x).length) * 90 - audioFalse * 8));
+        finishTest(6, scores['t6']);
+        return;
+      }
+      audioClicked = false;
+      const isDouble = audioSeq[audioIdx];
+      audioActive = isDouble;
+      document.getElementById('audio-stim').textContent = isDouble ? '🔊🔊' : '🔊';
+      document.getElementById('audio-trial').textContent = (audioIdx + 1) + '/8';
+
+      if (isDouble) {
+        beep(440, 'sine', 0.4, 0.15);
+        setTimeout(() => beep(440, 'sine', 0.4, 0.15), 220);
+      } else {
+        beep(440, 'sine', 0.4, 0.25);
+      }
+
+      setTimeout(() => {
+        document.getElementById('audio-stim').textContent = '—';
+        if (!audioClicked && isDouble) { }
+        audioIdx++;
+        setTimeout(nextAudio, 800);
+      }, 1500);
+    }
+
+    function audioClick() {
+      if (audioClicked) return;
+      audioClicked = true;
+      if (audioActive) {
+        audioCorrect++;
+        beep(660, 'sine', 0.2, 0.1);
+        document.getElementById('audio-stim').className = 'stimulus-box correct';
+      } else {
+        audioFalse++;
+        errorSound();
+        document.getElementById('audio-stim').className = 'stimulus-box incorrect';
+      }
+      document.getElementById('audio-correct').textContent = audioCorrect;
+      document.getElementById('audio-false').textContent = audioFalse;
+    }
+
+    // ===== RESULTS =====
+    function scoreToPercentile(score) {
+      if (score >= 88) return 90;
+      if (score >= 75) return 75;
+      if (score >= 55) return 50;
+      if (score >= 35) return 25;
+      return 10;
+    }
+
+    function badge(p) {
+      if (p >= 75) return '<span class="result-badge badge-strong">🟢 STRONG</span>';
+      if (p >= 50) return '<span class="result-badge badge-average">🟡 AVERAGE</span>';
+      return '<span class="result-badge badge-train">🔴 ALLENA</span>';
+    }
+
+    const testMeta = [
+      { key:'t1', name:'Memoria di Lavoro', icon:'🧠' },
+      { key:'t2', name:'Attenzione Sostenuta', icon:'👁️' },
+      { key:'t3', name:'Inibizione Cognitiva', icon:'🎨' },
+      { key:'t4', name:'Impulse Control', icon:'⚡' },
+      { key:'t5', name:'Reaction Time', icon:'🎯' },
+      { key:'t6', name:'Auditory Processing', icon:'🔊' },
+    ];
+
+    function getWeakAreas() {
+      return testMeta.filter(t => scoreToPercentile(scores[t.key] || 40) < 50).map(t => t.name);
+    }
+
+    function showResults() {
+      showSection('results');
+      setProgress(7);
+      let html = '';
+      testMeta.forEach(t => {
+        const s = scores[t.key] || 40;
+        const p = scoreToPercentile(s);
+        html += `
+          <div class="result-row">
+            <div class="result-left">
+              <div class="result-label">${t.icon} ${t.name}</div>
+            </div>
+            <div class="result-right">
+              <div class="result-perc">${p}°</div>
+              ${badge(p)}
+            </div>
+          </div>`;
+      });
+      document.getElementById('results-display').innerHTML = html;
+
+      const weak = getWeakAreas();
+      let rec = '';
+      if (weak.length === 0) {
+        rec = 'Profilo eccellente su tutte le misurazioni. Il tuo protocollo si concentrerà sul mantenimento e il potenziamento avanzato con active coordination training e protocolli audio gamma.';
+      } else if (weak.includes('Attenzione Sostenuta') || weak.includes('Memoria di Lavoro')) {
+        rec = 'Le tue aree prioritarie sono attenzione e memoria. Il tuo protocollo include alpha wave audio per il focus, theta waves per la memoria, e active coordination training bimanuale. Risultati visibili in 3 settimane.';
+      } else if (weak.includes('Impulse Control') || weak.includes('Inibizione Cognitiva')) {
+        rec = 'Il tuo profilo mostra margine in inibizione e controllo impulsivo. Il tuo protocollo include Stroop training progressivo, 40Hz vagal activation e protocolli di regolazione emotiva. Risultati in 4 settimane.';
+      } else {
+        rec = `Il tuo protocollo personalizzato lavora su: ${weak.join(', ')}. Include audio protocols specifici + active training mirato. Il miglioramento è misurabile con un retest a 30 giorni.`;
+      }
+      document.getElementById('protocol-recommendation').textContent = rec;
+      successSound();
+    }
+
+    function submitAndShowResults() {
+      const email = document.getElementById('user-email').value;
+      const name = document.getElementById('user-name').value;
+      if (email && email.includes('@')) {
+        submitToMailerLite(email, name);
+      }
+      showResults();
+    }
+
+    function submitToMailerLite(email, name) {
+      const MAILERLITE_API_KEY = 'SOSTITUISCI_CON_TUO_API_KEY';
+      const GROUP_ID = 'SOSTITUISCI_CON_TUO_GROUP_ID';
+
+      fetch('https://api.mailerlite.com/api/v2/subscribers', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-MailerLite-ApiKey': MAILERLITE_API_KEY
+        },
+        body: JSON.stringify({
+          email: email,
+          name: name,
+          resubscribe: true,
+          fields: {
+            score_memoria: scores.t1 || 0,
+            score_attenzione: scores.t2 || 0,
+            score_stroop: scores.t3 || 0,
+            score_gonogo: scores.t4 || 0,
+            score_rt: scores.t5 || 0,
+            score_audio: scores.t6 || 0
+          },
+          groups: [GROUP_ID]
+        })
+      }).catch(() => {});
+    }
+  </script>
+</body>
+</html>
