@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Benvenuta nell'Academy — Neuroplasticity Training Academy</title>
+  <style>
+    :root {
+      --navy: #0d1b2a;
+      --navy-mid: #1b2d42;
+      --navy-light: #243850;
+      --gold: #c9a84c;
+      --teal: #3ecfcf;
+      --green: #6bcf7f;
+      --white: #f5f3ee;
+      --grey: #8a9bb0;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: var(--navy);
+      color: var(--white);
+      min-height: 100vh;
+      padding: 24px 20px 60px;
+    }
+    .wrap { max-width: 520px; margin: 0 auto; }
+
+    .logo {
+      text-align: center;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--gold);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 32px;
+    }
+    .logo span { color: var(--white); }
+
+    /* HERO */
+    .hero {
+      text-align: center;
+      margin-bottom: 32px;
+    }
+    .check-icon {
+      width: 72px;
+      height: 72px;
+      background: rgba(107,207,127,0.15);
+      border: 2px solid var(--green);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 32px;
+      margin: 0 auto 20px;
+    }
+    .hero h1 { font-size: 26px; font-weight: 800; margin-bottom: 10px; }
+    .hero p { font-size: 14px; color: var(--grey); line-height: 1.6; }
+
+    /* CARD */
+    .card {
+      background: var(--navy-mid);
+      border-radius: 14px;
+      padding: 22px;
+      margin-bottom: 14px;
+      border: 1px solid rgba(255,255,255,0.07);
+    }
+
+    .card-gold { border-color: rgba(201,168,76,0.3); }
+    .card-teal { border-color: rgba(62,207,207,0.2); }
+
+    .card-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+
+    .card-icon { font-size: 24px; flex-shrink: 0; }
+
+    .card-title { font-size: 15px; font-weight: 700; }
+    .card-sub { font-size: 12px; color: var(--grey); margin-top: 2px; }
+
+    /* STEPS */
+    .steps { display: flex; flex-direction: column; gap: 12px; }
+
+    .step {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      padding: 14px;
+      background: var(--navy-light);
+      border-radius: 10px;
+    }
+
+    .step-num {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: var(--gold);
+      color: var(--navy);
+      font-size: 13px;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .step-text strong { font-size: 14px; display: block; margin-bottom: 3px; }
+    .step-text span { font-size: 12px; color: var(--grey); }
+
+    /* BUTTONS */
+    .btn-primary {
+      width: 100%;
+      padding: 15px;
+      background: var(--gold);
+      color: var(--navy);
+      border: none;
+      border-radius: 12px;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.15s;
+      margin-top: 14px;
+      display: block;
+      text-align: center;
+      text-decoration: none;
+    }
+    .btn-primary:hover { background: #e0bc60; }
+
+    .btn-ghost {
+      width: 100%;
+      padding: 13px;
+      background: transparent;
+      color: var(--grey);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 12px;
+      font-size: 14px;
+      cursor: pointer;
+      margin-top: 10px;
+      display: block;
+      text-align: center;
+      text-decoration: none;
+      transition: all 0.15s;
+    }
+    .btn-ghost:hover { border-color: var(--grey); color: var(--white); }
+
+    /* DIVIDER */
+    .divider {
+      text-align: center;
+      font-size: 11px;
+      color: var(--grey);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin: 8px 0;
+    }
+  </style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="logo">Neuroplasticity Training <span>Academy</span></div>
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="check-icon">✓</div>
+    <h1>Sei dentro. 🎉</h1>
+    <p>Il pagamento è confermato. Controlla la tua email — riceverai i dettagli di accesso a breve.</p>
+  </div>
+
+  <!-- INIZIA SUBITO -->
+  <div class="card card-gold">
+    <div class="card-header">
+      <span class="card-icon">⚡</span>
+      <div>
+        <div class="card-title">Inizia adesso, non aspettare</div>
+        <div class="card-sub">Il tuo cervello è pronto. Cominciamo.</div>
+      </div>
+    </div>
+
+    <a class="btn-primary" href="breathing.html">
+      🫁 Inizia con il Protocollo Respiro →
+    </a>
+    <div class="divider">oppure</div>
+    <a class="btn-ghost" href="assessment.html">
+      🧠 Fai il tuo Assessment Completo →
+    </a>
+  </div>
+
+  <!-- COSA SUCCEDE ORA -->
+  <div class="card card-teal">
+    <div class="card-header">
+      <span class="card-icon">📬</span>
+      <div>
+        <div class="card-title">Cosa succede adesso</div>
+      </div>
+    </div>
+
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-text">
+          <strong>Email di benvenuto (in arrivo)</strong>
+          <span>Riceverai i tuoi risultati, il protocollo personalizzato e i link di accesso.</span>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-text">
+          <strong>Il tuo piano 30 giorni</strong>
+          <span>Protocolli audio + training attivo calibrati sul tuo profilo neurocognitivo.</span>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-text">
+          <strong>Giulia ti scrive entro 24h</strong>
+          <span>Riceverai un messaggio personale per impostare il percorso nel modo migliore per te.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PERCORSO CLINICO -->
+  <div class="card">
+    <div class="card-header">
+      <span class="card-icon">🩺</span>
+      <div>
+        <div class="card-title">Vuoi lavorare in profondità?</div>
+        <div class="card-sub">Trauma, ansia, DSA, regolazione emotiva</div>
+      </div>
+    </div>
+    <p style="font-size:13px; color:var(--grey); margin-bottom:14px; line-height:1.6;">
+      L'Academy allena il cervello. Se senti che c'è qualcosa di più profondo da lavorare, il percorso clinico 1:1 con Giulia è il passo successivo.
+    </p>
+    <a class="btn-ghost" href="https://calendly.com/[TUO-CALENDLY]" target="_blank">
+      Prenota un colloquio con Giulia →
+    </a>
+  </div>
+
+</div>
+
+<script src="integrations.js"></script>
+<script>
+  // Notify Giulia via WhatsApp when someone lands on thank-you
+  const params = new URLSearchParams(window.location.search);
+  const name = params.get('name') || 'Nuovo cliente';
+  const email = params.get('email') || '';
+  const plan = params.get('plan') || 'assessment';
+
+  if (email) {
+    notifyWhatsApp(name, email, 'ACQUISTO: ' + plan);
+  }
+</script>
+</body>
+</html>

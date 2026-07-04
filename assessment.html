@@ -450,15 +450,18 @@
       </div>
     </div>
 
-    <!-- EMAIL CAPTURE -->
+    <!-- EMAIL GATE - OBBLIGATORIO -->
     <div id="email-capture" class="card hidden">
-      <div class="test-tag">Quasi fatto!</div>
-      <h2>Dove ti mando i risultati?</h2>
-      <p class="instruction">Il tuo profilo neurocognitivo completo + il protocollo personalizzato arriveranno via email.</p>
+      <div class="test-tag">✓ Test completato</div>
+      <h2>Dove invio il tuo profilo?</h2>
+      <p class="instruction">Inserisci la tua email per vedere i risultati e ricevere il tuo protocollo neurocognitivo personalizzato.</p>
       <input type="text" id="user-name" placeholder="Il tuo nome" style="margin-bottom:12px;">
       <input type="email" id="user-email" placeholder="nome@email.com">
+      <p style="font-size:11px; color:var(--grey); margin-bottom:16px; line-height:1.5;">
+        Riceverai i tuoi risultati dettagliati + il protocollo personalizzato.<br>
+        Nessuno spam. Cancella quando vuoi.
+      </p>
       <button class="btn-primary" onclick="submitAndShowResults()">Mostra i miei risultati →</button>
-      <button class="btn-ghost" onclick="showResults()" style="margin-top:8px;">Salta, vedi solo i risultati</button>
     </div>
 
     <!-- RESULTS -->
@@ -924,8 +927,8 @@
     }
 
     function submitToMailerLite(email, name) {
-      const MAILERLITE_API_KEY = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiI0IiwianRpIjoiNTg2ZGQzYTU0MGIzMWIyZjkyOWIxMTBhNTA3M2MxZDk0ZDVmNTc1ZGE1OTI2NjUwMzc5ZTViYzAzYWIxMzI4ODJhMzY5OGY0NzYzY2IwZmEiLCJpYXQiOjE3ODMxMjI0NjkuNTM2MDQ1LCJuYmYiOjE3ODMxMjI0NjkuNTM2MDQ4LCJleHAiOjQ5Mzg3OTYwNjkuNTI5MDE3LCJzdWIiOiIzNDM5OTYiLCJzY29wZXMiOltdfQ.Mm22Q-cPoeU6FA_8JmtUd9OR-vmugEjOaxMU8gOKuMNMPktF4fe--AU_JYX0r20gd-taF_OcVmOG5goegTzKXEbtRuMc4uPcYbgsshK5qWEBAm-dICU8gDq-8dvM02cNLYLUZbxzW7HnMbcyL8wQSUYITaV7wao3vXe_h8RDvZkW_NLoyb2Qs-bDkCDLF2hxeEGM1YdHlYIDgQWBSY85D0yZ3UccRti56daJCxMOCLnSa8oL4Y1zWjpXhgoFMDXsDDiihXL3wYOMmzIStA-EJPojTPSEpeWu-SDlo-n3fWVV0XhEpGkGKNnuc_hNRPyT-UPr5CTbKl8cpa6gtfVZBL0PzKowvRxAT9OzZDSWRo4uF-nm5mx7iLBl3xkxuvpOJRVKeWxMqgKWQA9HmS0-2jNEDX_ZEZF3-G0dODpdw_6EieL2E520ck0nugeKhpVwGl9pxOLGqmf4JsJgPK5afiDLtRpuXw3v8jmpabOhjg3cDXmMFbktvDvlgxToF92yQpLysxTts7u_Qsb1bS_A4V-91yFrKtZQPAn8-5D-5cNzwrEBnX31XM93OQWXFWwl7hLjj5NQEYLo4znmu_wnAPuFesvy9dkDhmBpIExb-QjJzTLrhPGtgxBjIQWHN53zeu8rEzhRU49JQwfcwnCjEaBJ32W8wFbCpcQ_PkvsT_w';
-      const GROUP_ID = 'neuroplasticity_academy';
+      const MAILERLITE_API_KEY = 'SOSTITUISCI_CON_TUO_API_KEY';
+      const GROUP_ID = 'SOSTITUISCI_CON_TUO_GROUP_ID';
 
       fetch('https://api.mailerlite.com/api/v2/subscribers', {
         method: 'POST',
@@ -948,6 +951,26 @@
           groups: [GROUP_ID]
         })
       }).catch(() => {});
+    }
+  </script>
+  <script src="integrations.js"></script>
+  <script>
+    // Override submitToMailerLite to use shared integrations
+    async function submitToMailerLiteV2(email, name, scores) {
+      // Add to MailerLite
+      await addToMailerLite(email, name, {
+        score_memoria: scores.t1 || 0,
+        score_attenzione: scores.t2 || 0,
+        score_stroop: scores.t3 || 0,
+        score_gonogo: scores.t4 || 0,
+        score_rt: scores.t5 || 0,
+        score_audio: scores.t6 || 0,
+        source: 'assessment'
+      });
+
+      // Notify Giulia via WhatsApp
+      const summary = `Scores: Mem ${scores.t1||0}, Att ${scores.t2||0}, Stroop ${scores.t3||0}, GoNoGo ${scores.t4||0}, RT ${scores.t5||0}, Audio ${scores.t6||0}`;
+      await notifyWhatsApp(name, email, 'Assessment Completato', { summary });
     }
   </script>
 </body>

@@ -8,6 +8,8 @@
     { "src": "/respiro", "dest": "/breathing.html" },
     { "src": "/breathing", "dest": "/breathing.html" },
     { "src": "/checkout", "dest": "/checkout.html" },
-    { "src": "/acquista", "dest": "/checkout.html" }
+    { "src": "/acquista", "dest": "/checkout.html" },
+    { "src": "/grazie", "dest": "/thank-you.html" },
+    { "src": "/thank-you", "dest": "/thank-you.html" }
   ]
 }
