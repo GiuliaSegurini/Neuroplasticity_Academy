@@ -383,21 +383,14 @@
     el.style.display = 'block';
   }
 
-  function saveToMailerLite(email, name) {
-    fetch('https://api.mailerlite.com/api/v2/subscribers', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'X-MailerLite-ApiKey': 'SOSTITUISCI_CON_TUO_API_KEY'
-      },
-      body: JSON.stringify({
-        email,
-        name,
-        resubscribe: true,
-        fields: { source: 'checkout', product: selectedProduct },
-        groups: ['SOSTITUISCI_CON_TUO_GROUP_ID']
-      })
-    }).catch(() => {});
+  async function saveToMailerLite(email, name) {
+    await addToMailerLite(email, name, {
+      source: 'checkout',
+      product: selectedProduct
+    });
+    // Notify Giulia via WhatsApp
+    const prod = products[selectedProduct];
+    await notifyWhatsApp(name, email, prod.name + ' ' + prod.price);
   }
 
   // Check success redirect
@@ -411,5 +404,6 @@
     }
   }
 </script>
+  <script src="integrations.js"></script>
 </body>
 </html>
